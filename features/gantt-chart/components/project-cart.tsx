@@ -7,6 +7,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { CalendarClock } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
     data: {
@@ -14,12 +15,16 @@ interface ProjectCardProps {
         description?: string,
         startDate: string,
         endDate: string
-    }
+    },
+    className?: string
 }
 
-const ProjectCard = ({ data }: ProjectCardProps) => {
+const ProjectCard = ({ data, className }: ProjectCardProps) => {
     return (
-        <Card className='w-full shadow-none border-none rounded-xs gap-y-2 cursor-pointer hover:bg-slate-50 hover:border-purple-200'>
+        <Card className={cn(
+            className,
+            'w-full shadow-none rounded-xs gap-y-2 cursor-pointer hover:bg-slate-50 hover:border-purple-400'
+        )}>
             <CardHeader>
                 <CardTitle>{data.title}</CardTitle>
                 <CardDescription>{data.description}</CardDescription>

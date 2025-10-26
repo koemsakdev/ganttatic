@@ -7,10 +7,13 @@ import { BadgePlus, Search } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { useCreateProjectModal } from '@/features/gantt-chart/hooks/use-create-project-modal'
 import { useSearchProjectCommand } from '@/features/gantt-chart/hooks/use-search-project-command';
+import { eventData } from '@/data/fake-project';
+import ProjectCard from '@/features/gantt-chart/components/project-cart';
 
 const GanttChart = () => {
     const { open: createProject } = useCreateProjectModal();
     const { open: searchProject, setIsOpen: setIsProjectOpen } = useSearchProjectCommand();
+    const data = eventData;
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -21,7 +24,7 @@ const GanttChart = () => {
         }
         document.addEventListener("keydown", down)
         return () => document.removeEventListener("keydown", down)
-    }, [])
+    }, [setIsProjectOpen])
 
     return (
         <div className='w-full h-full'>
@@ -50,6 +53,12 @@ const GanttChart = () => {
                 </div>
             </div>
             <Separator className='my-4' />
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
+                {data.map((project) => (
+                    <ProjectCard key={project.title} data={project} className='border-[1px] border-purple-200' />
+                ))}
+            </div>
+
         </div>
     )
 }
