@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Siemreap&family=Sora:wght@100..800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -114,11 +114,11 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    font-family: "Siemreap", "Sora", sans-serif !important;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Siemreap", "Sora", sans-serif !important;
   }
 
   button {

@@ -1,5 +1,6 @@
 export const eventData = [
   {
+    id: "1",
     title: "Project Launch Kickoff",
     description:
       "Final planning session and feature-freeze meeting for the Q4 product release.",
@@ -7,6 +8,7 @@ export const eventData = [
     endDate: "Oct 30, 2025",
   },
   {
+    id: "2",
     title: "Product Launch",
     description:
       "Ongoing product launch event with a focus on customer feedback and post-launch support.",
@@ -14,6 +16,7 @@ export const eventData = [
     endDate: "Nov 3, 2025",
   },
   {
+    id: "3",
     title: "Customer Feedback Session",
     description:
       "Regular session to gather customer feedback and address any concerns.",
@@ -21,6 +24,7 @@ export const eventData = [
     endDate: "Nov 7, 2025",
   },
   {
+    id: "4",
     title: "Post-Launch Support Session",
     description:
       "Ongoing support session to address customer concerns and provide post-launch guidance.",
@@ -28,6 +32,7 @@ export const eventData = [
     endDate: "Nov 12, 2025",
   },
   {
+    id: "5",
     title: "Customer Support Session",
     description:
       "Ongoing support session to address customer concerns and provide post-launch guidance.",

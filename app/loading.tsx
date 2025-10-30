@@ -13,18 +13,18 @@ export default function Loading() {
         {/* outer spinning ring */}
         <div
           className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 
-                     rounded-full border-4 border-transparent border-t-blue-500 
+                     rounded-full border-4 border-transparent border-t-purple-500 
                      animate-spin"
         />
         {/* soft glow ring */}
         <div
           className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 
-                     rounded-full blur-lg bg-blue-500/20"
+                     rounded-full blur-lg bg-purple-500/20"
         />
 
         <Loader2
           className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 
-                     text-blue-500 dark:text-blue-400 animate-spin-slow"
+                     text-purple-500 dark:text-purple-400 animate-spin-slow"
         />
       </div>
     </div>

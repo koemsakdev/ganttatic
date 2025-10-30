@@ -50,39 +50,42 @@ export function SignInForm({
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    try {
-      const response = await fetch("/api/auth/sign-in", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        showToast(
-          "Success",
-          result.message || "Signed in successfully",
-          "success"
-        );
-        router.push("/");
-      } else {
-        showToast(
-          "Error",
-          result.message || "An unexpected error occurred",
-          "error"
-        );
-      }
-    } catch (error) {
-      showToast(
-        "Error",
-        error instanceof Error ? error.message : "An unexpected error occurred",
-        "error"
-      );
-    }
+    // try {
+    //   const response = await fetch("/api/auth/sign-in", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
+    //   const result = await response.json();
+    //   if (response.ok) {
+    //     showToast(
+    //       "Success",
+    //       result.message || "Signed in successfully",
+    //       "success"
+    //     );
+    //     router.push("/");
+    //   } else {
+    //     showToast(
+    //       "Error",
+    //       result.message || "An unexpected error occurred",
+    //       "error"
+    //     );
+    //   }
+    // } catch (error) {
+    //   showToast(
+    //     "Error",
+    //     error instanceof Error ? error.message : "An unexpected error occurred",
+    //     "error"
+    //   );
+    // }
+
+    console.table(data);
   };
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xs p-6 shadow-none md:shadow-2xs", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
@@ -93,20 +96,15 @@ export function SignInForm({
               >
                 <div className="flex items-center justify-center mb-2">
                   <Image
-                    src={"/blue-para-lms.svg"}
+                    src={"/ganttastic.svg"}
                     alt="Auth Logo"
                     width={200}
                     height={100}
                   />
                 </div>
-                <span className="sr-only">Para LMS</span>
               </Link>
-              <h1 className="text-xl font-bold">Welcome to Para LMS</h1>
             </div>
             <div className="flex flex-col gap-4">
-              <p className={"text-sm text-center"}>
-                Enter your email below to login to your account.
-              </p>
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <FormField
@@ -181,13 +179,13 @@ export function SignInForm({
                   control={form.control}
                   name="remember"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex flex-row items-end space-x-1 space-y-0">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           className={
-                            "data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                            "data-[state=checked]:border-purple-600 data-[state=checked]:bg-purple-600 data-[state=checked]:text-white dark:data-[state=checked]:border-purple-700 dark:data-[state=checked]:bg-purple-700 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                           }
                         />
                       </FormControl>
@@ -201,7 +199,7 @@ export function SignInForm({
 
               <Button
                 type="submit"
-                className="w-full rounded-xs shadow-none bg-blue-200 hover:bg-blue-300 text-blue-600 hover:text-blue-700"
+                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700"
               >
                 {isSubmitting ? (
                   <div className="flex items-center">
@@ -214,22 +212,22 @@ export function SignInForm({
             </div>
             <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
               <span className="bg-background text-muted-foreground relative z-10 px-2">
-                Or
+                Or Continue With
               </span>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-1 sm:grid-cols-2">
               <Button
-                variant="outline"
+                variant="secondary"
                 type="button"
-                className="w-full shadow-none rounded-xs"
+                className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500"
               >
                 <FaGithub className="h-4 w-4" />
                 Continue with GitHub
               </Button>
               <Button
-                variant="outline"
+                variant="secondary"
                 type="button"
-                className="w-full shadow-none rounded-xs"
+                className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500"
               >
                 <FcGoogle className="h-4 w-4" />
                 Continue with Google
@@ -240,7 +238,7 @@ export function SignInForm({
       </Form>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="underline underline-offset-4">
+        <Link href="/register" className="underline underline-offset-4 hover:text-purple-600 dark:text-purple-700">
           Register
         </Link>
       </div>

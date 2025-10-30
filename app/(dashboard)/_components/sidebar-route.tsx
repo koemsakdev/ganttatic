@@ -1,6 +1,6 @@
 "use client";
 
-import {BarChart2, ChartNoAxesCombined, CircleGauge} from "lucide-react";
+import {BarChart2, ChartNoAxesCombined, CircleGauge, Settings} from "lucide-react";
 import {SidebarItem} from "@/app/(dashboard)/_components/sidebar-item";
 
 const menuRoutes = [
@@ -18,7 +18,12 @@ const menuRoutes = [
         name: "Reports",
         href: "/report",
         icon: ChartNoAxesCombined
-    }
+    },
+    {
+        name: "Settings",
+        href: "/settings",
+        icon: Settings
+    },
 ];
 
 

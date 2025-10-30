@@ -47,5 +47,6 @@ export const registerSchema = z.object({
             /^(?=.*[A-Z])/,
             "Password must contain at least one uppercase letter"
         ),
+    image: z.string().url("Invalid image URL").optional(),
     
 })

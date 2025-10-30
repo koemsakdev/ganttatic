@@ -11,7 +11,7 @@ export const SearchProjectCommand = () => {
     return (
         <SearchDialog open={isOpen} onOpenChange={setIsOpen}>
             {eventData.map((item) => (
-                <CommandItem key={item.title} className="!p-0 rounded-xs border-[1px]">
+                <CommandItem key={item.id} className="!p-0 rounded-xs border-[1px]">
                     <ProjectCard data={item} />
                 </CommandItem>
             ))}

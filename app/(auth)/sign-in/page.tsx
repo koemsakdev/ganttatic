@@ -2,7 +2,7 @@ import {SignInForm} from "@/app/(auth)/_components/sing-in-form";
 
 const SignInPage = ()=> {
     return (
-        <div>
+        <div className="w-full max-w-md">
             <SignInForm />
         </div>
     )

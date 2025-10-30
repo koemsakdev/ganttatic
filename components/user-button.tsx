@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 
 export const UserButton = () => {
     return (
@@ -18,12 +18,23 @@ export const UserButton = () => {
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align={"end"}>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <div className="flex flex-col justify-center items-center gap-2 px-2.5 py-2">
+                    <Avatar className="size-12 text-xl rounded-full border border-neutral-300">
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <p className="text-sm font-medium text-neutral-900"> Koemsak Mean </p>
+                    <p className="text-xs font-medium text-neutral-500"> koemsak.mean@gmail.com </p>
+                </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel className="font-normal text-sm pb-0 text-purple-600">Name: Koemsak Mean</DropdownMenuLabel>
-                <DropdownMenuLabel className="font-normal text-sm pt-0 text-purple-600">Email: koemsak.mean@gmail.com</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer flex items-center gap-2 hover:bg-purple-200 hover:text-purple-600"><Settings className="hover:text-purple-600" /> Setting</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                    <Settings className="size-4" />
+                    <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                    <LogOut className="size-4 text-red-500" />
+                    <span className="text-red-500">Logout</span>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

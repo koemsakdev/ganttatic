@@ -25,14 +25,12 @@ interface SearchDialogProps {
 export function SearchDialog({ children, open, onOpenChange }: SearchDialogProps) {
 
     return (
-        <CommandDialog open={open} onOpenChange={onOpenChange} className="rounded-[4px] shadow-none">
+        <CommandDialog open={open} onOpenChange={onOpenChange} className="rounded-[4px] shadow-none w-full">
             <CommandInput placeholder="Type a project name or search..." />
             <CommandList className="p-0">
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup className="py-2">
                     <div className="flex flex-col gap-y-2">
-                        {/* <CommandItem className="!p-0 rounded-xs">
-                        </CommandItem> */}
                         {children}
                     </div>
                 </CommandGroup>

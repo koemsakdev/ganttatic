@@ -1,23 +1,23 @@
 "use client"
 
-import {z} from "zod";
+import { z } from "zod";
 import Link from "next/link";
-import {cn} from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import Image from "next/image";
-import React, {useState} from "react";
-import {useForm} from "react-hook-form";
-import {useRouter} from "next/navigation";
-import {useToast} from "@/hooks/useToast";
-import {Label} from "@/components/ui/label"
-import {Input} from "@/components/ui/input"
-import {Button} from "@/components/ui/button"
-import {registerSchema} from "@/app/(auth)/schema";
-import {zodResolver} from "@hookform/resolvers/zod";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/useToast";
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { registerSchema } from "@/app/(auth)/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
-import {FcGoogle} from "react-icons/fc";
-import {FaGithub} from "react-icons/fa";
-import {Eye, EyeOff, Loader} from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import { Eye, EyeOff, Loader } from "lucide-react";
 
 import {
     Form,
@@ -26,16 +26,16 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form";
-import authClient from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 
 export function RegisterForm({
-       className,
-       ...props
-    }: React.ComponentProps<"div">) {
+    className,
+    ...props
+}: React.ComponentProps<"div">) {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
-    const {showToast} = useToast();
+    const { showToast } = useToast();
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -43,52 +43,56 @@ export function RegisterForm({
             firstName: "",
             lastName: "",
             email: "",
-            password: ""
+            password: "",
+            image: "",
         },
     });
 
-    const {isSubmitting} = form.formState;
+    const { isSubmitting } = form.formState;
 
     const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-        try {
-            await authClient.signUp.email(
-                {
-                    name: `${data.firstName} ${data.lastName}`,
-                    email: data.email,
-                    password: data.password,
-                },
-                {
-                    onSuccess: (ctx) => {
-                        showToast(
-                            "Success",
-                            "Account created successfully",
-                            "success"
-                        );
+        // try {
+        //     await authClient.signUp.email(
+        //         {
+        //             name: `${data.firstName} ${data.lastName}`,
+        //             email: data.email,
+        //             password: data.password,
+        //         },
+        //         {
+        //             onSuccess: (ctx) => {
+        //                 showToast(
+        //                     "Success",
+        //                     "Account created successfully",
+        //                     "success"
+        //                 );
 
-                        router.push("/");
-                    },
-                    onError: (ctx) => {
-                        showToast(
-                            "Error",
-                            ctx.error.message || "An unexpected error occurred",
-                            "error"
-                        )
-                    },
-                }
-            )
-        } catch (error) {
-            showToast(
-                "Error",
-                error instanceof Error ? error.message : "An unexpected error occurred",
-                "error"
-            );
-        }
+        //                 router.push("/");
+        //             },
+        //             onError: (ctx) => {
+        //                 showToast(
+        //                     "Error",
+        //                     ctx.error.message || "An unexpected error occurred",
+        //                     "error"
+        //                 )
+        //             },
+        //         }
+        //     )
+        // } catch (error) {
+        //     showToast(
+        //         "Error",
+        //         error instanceof Error ? error.message : "An unexpected error occurred",
+        //         "error"
+        //     );
+        // }
+
+        console.table(data);
     };
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xs p-6 shadow-none md:shadow-2xs", className)} {...props}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-6">
+                            
                         <div className="flex flex-col items-center gap-2">
                             <Link
                                 href="/"
@@ -96,25 +100,22 @@ export function RegisterForm({
                             >
                                 <div className="flex items-center justify-center mb-2">
                                     <Image
-                                        src={"/blue-para-lms.svg"}
+                                        src={"/ganttastic.svg"}
                                         alt="Auth Logo"
                                         width={200}
                                         height={100}
                                     />
                                 </div>
-                                <span className="sr-only">Para LMS</span>
                             </Link>
-                            <h1 className="text-xl font-bold">Register an Account</h1>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <p className={"text-sm text-center"}>Enter your information to create an account</p>
                             <div className="grid lg:grid-cols-2 gap-3">
                                 <div className="grid gap-3">
                                     <Label htmlFor="firstName">First Name</Label>
                                     <FormField
                                         name="firstName"
                                         control={form.control}
-                                        render={({field}) => (
+                                        render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
@@ -126,7 +127,7 @@ export function RegisterForm({
                                                         className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                                     />
                                                 </FormControl>
-                                                <FormMessage className="text-xs text-red-500"/>
+                                                <FormMessage className="text-xs text-red-500" />
                                             </FormItem>
                                         )}
                                     />
@@ -136,7 +137,7 @@ export function RegisterForm({
                                     <FormField
                                         name="lastName"
                                         control={form.control}
-                                        render={({field}) => (
+                                        render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
                                                     <Input
@@ -148,7 +149,7 @@ export function RegisterForm({
                                                         className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                                     />
                                                 </FormControl>
-                                                <FormMessage className="text-xs text-red-500"/>
+                                                <FormMessage className="text-xs text-red-500" />
                                             </FormItem>
                                         )}
                                     />
@@ -159,7 +160,7 @@ export function RegisterForm({
                                 <FormField
                                     name="email"
                                     control={form.control}
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
                                                 <Input
@@ -171,7 +172,7 @@ export function RegisterForm({
                                                     className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                                 />
                                             </FormControl>
-                                            <FormMessage className="text-xs text-red-500"/>
+                                            <FormMessage className="text-xs text-red-500" />
                                         </FormItem>
                                     )}
                                 />
@@ -181,7 +182,7 @@ export function RegisterForm({
                                 <FormField
                                     name="password"
                                     control={form.control}
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
                                                 <div className="relative">
@@ -201,25 +202,25 @@ export function RegisterForm({
                                                         className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 cursor-pointer shadow-none hover:bg-transparent"
                                                     >
                                                         {showPassword ? (
-                                                            <Eye className="h-4 w-4"/>
+                                                            <Eye className="h-4 w-4" />
                                                         ) : (
-                                                            <EyeOff className="h-4 w-4"/>
+                                                            <EyeOff className="h-4 w-4" />
                                                         )}
                                                     </Button>
                                                 </div>
                                             </FormControl>
-                                            <FormMessage className="text-xs text-red-500"/>
+                                            <FormMessage className="text-xs text-red-500" />
                                         </FormItem>
                                     )}
                                 />
                             </div>
                             <Button
                                 type="submit"
-                                className="w-full rounded-xs shadow-none bg-blue-200 hover:bg-blue-300 text-blue-600 hover:text-blue-700">
+                                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700">
                                 {
                                     isSubmitting ? (
                                         <div className="flex items-center">
-                                            <Loader size={4} className="animate-spin"/>
+                                            <Loader size={4} className="animate-spin" />
                                         </div>
                                     ) : (
                                         "REGISTER"
@@ -229,16 +230,16 @@ export function RegisterForm({
                         </div>
                         <div
                             className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                        <span className="bg-background text-muted-foreground relative z-10 px-2">
-                          Or
-                        </span>
+                            <span className="bg-background text-muted-foreground relative z-10 px-2">
+                                Or Continue With
+                            </span>
                         </div>
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <Button variant="outline" type="button" className="w-full shadow-none rounded-xs">
+                        <div className="grid gap-1 sm:grid-cols-2">
+                            <Button variant="secondary" type="button" className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500">
                                 <FaGithub className="h-4 w-4" />
                                 Continue with GitHub
                             </Button>
-                            <Button variant="outline" type="button" className="w-full shadow-none rounded-xs">
+                            <Button variant="secondary" type="button" className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500">
                                 <FcGoogle className="h-4 w-4" />
                                 Continue with Google
                             </Button>
@@ -248,7 +249,7 @@ export function RegisterForm({
             </Form>
             <div className="text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/sign-in" className="underline underline-offset-4">
+                <Link href="/sign-in" className="underline underline-offset-4 hover:text-purple-600 dark:text-purple-700">
                     Login
                 </Link>
             </div>
