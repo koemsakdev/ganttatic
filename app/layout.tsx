@@ -2,6 +2,7 @@ import React from "react";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css";
 import { Toaster } from "sonner";
@@ -19,11 +20,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${inter.className} min-h-screen p-0 m-0 antialiased bg-gray-50`}>
+        <html lang="en" suppressHydrationWarning>
+            <body className={`${inter.className} min-h-screen p-0 m-0 antialiased bg-gray-50 dark:bg-gray-900`}>
                 <NuqsAdapter>
-                    {children}
-                    <Toaster />
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+
+                        {children}
+                        <Toaster />
+                    </ThemeProvider>
                 </NuqsAdapter>
             </body>
         </html>

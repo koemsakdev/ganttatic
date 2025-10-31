@@ -75,10 +75,8 @@ const SettingPage = () => {
     }
   }
 
-
   return (
-    <div className='w-full h-full'>
-
+    <div className='w-full h-full md:max-w-4xl mx-auto'>
       <h1 className={"text-lg md:text-2xl font-bold"}>
         Account Settings
       </h1>
@@ -111,7 +109,7 @@ const SettingPage = () => {
                           {
                             field.value ? (
                               <div className={cn(
-                                "size-[170px] relative rounded-xs overflow-hidden",
+                                "size-[170px] relative rounded-full overflow-hidden",
                                 "border-2 border-dashed cursor-pointer transition-colors",
                                 "border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-800"
                               )}>
@@ -126,7 +124,7 @@ const SettingPage = () => {
                               </div>
                             ) : (
                               <Avatar className={cn(
-                                "size-[170px] rounded-xs",
+                                "size-[170px] rounded-full",
                                 "border-2 border-dashed cursor-pointer transition-colors",
                                 "hover:border-purple-400 dark:hover:border-purple-600 hover:bg-purple-100 dark:hover:bg-purple-700",
                                 "border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-800",
@@ -146,7 +144,7 @@ const SettingPage = () => {
                           <div className="flex flex-col">
                             <p className="text-sm text-muted-foreground">Accept only</p>
                             <p className="text-sm text-muted-foreground">
-                              .png, .jpg, .jpeg, or .svg, max 1MB
+                              PNG, JPG, JPEG, or SVG, max 1MB
                             </p>
                             <Input
                               type="file"
@@ -161,7 +159,10 @@ const SettingPage = () => {
                                   variant={"secondary"}
                                   type="button"
                                   size={"sm"}
-                                  className="w-fit rounded-xs mt-2 bg-purple-100 hover:bg-purple-200 text-purple-600 hover:text-purple-700"
+                                  className={cn(
+                                    "w-fit rounded-sm mt-2 bg-purple-100 hover:bg-purple-200 text-purple-600 hover:text-purple-700",
+                                    "dark:bg-purple-800 dark:hover:bg-purple-900 dark:text-purple-200 dark:hover:text-purple-100"
+                                  )}
                                   onClick={() => inputRef.current?.click()}
                                 >
                                   <Upload /> Upload a Profile
@@ -200,7 +201,7 @@ const SettingPage = () => {
                                 {...field}
                                 type="text"
                                 placeholder="Enter first name"
-                                className="w-full rounded-xs shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
+                                className="w-full rounded-sm shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
                                 autoComplete="off"
                               />
                             </FormControl>
@@ -221,7 +222,7 @@ const SettingPage = () => {
                                 {...field}
                                 type="text"
                                 placeholder="Enter first name"
-                                className="w-full rounded-xs shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
+                                className="w-full rounded-sm shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
                                 autoComplete="off"
                               />
                             </FormControl>
@@ -243,15 +244,15 @@ const SettingPage = () => {
                               {...field}
                               type="email"
                               placeholder="Enter email"
-                              className="w-full rounded-xs shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
+                              className="w-full rounded-sm shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
                               autoComplete="off"
                               value={"koemsak.mean@gmail.com"}
-                              disabled={true}
+                              readOnly={true}
                             />
                             <div className='absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity'>
                               <Badge
                                 variant="secondary"
-                                className="bg-green-500 text-white dark:bg-green-600"
+                                className="bg-green-500 text-white dark:bg-green-800"
                               >
                                 <BadgeCheckIcon />
                                 Verified
@@ -264,83 +265,12 @@ const SettingPage = () => {
                     )}
                   />
                   <Separator className='my-2' />
-                  <div className="grid gap-3">
-                    <Label htmlFor="password">Password</Label>
-                    <FormField
-                      name="password"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <div className="relative">
-                              <Input
-                                {...field}
-                                className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter your password"
-                                autoComplete="off"
-                                autoCorrect="off"
-                                spellCheck="false"
-                              />
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 cursor-pointer shadow-none hover:bg-transparent"
-                              >
-                                {showPassword ? (
-                                  <Eye className="h-4 w-4" />
-                                ) : (
-                                  <EyeOff className="h-4 w-4" />
-                                )}
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-xs text-red-500" />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <FormField
-                      name="confirmPassword"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <div className="relative">
-                              <Input
-                                {...field}
-                                className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder="Enter your confirm password"
-                                autoComplete="off"
-                                autoCorrect="off"
-                                spellCheck="false"
-                              />
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 cursor-pointer shadow-none hover:bg-transparent"
-                              >
-                                {showConfirmPassword ? (
-                                  <Eye className="h-4 w-4" />
-                                ) : (
-                                  <EyeOff className="h-4 w-4" />
-                                )}
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-xs text-red-500" />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
                   <Button
                     type="submit"
-                    className="w-fit rounded-xs px-8 shadow-none bg-purple-500 hover:bg-purple-600 text-white"
+                    className={cn(
+                      "w-fit rounded-sm mt-2 bg-purple-100 hover:bg-purple-200 text-purple-600 hover:text-purple-700",
+                      "dark:bg-purple-800 dark:hover:bg-purple-900 dark:text-purple-200 dark:hover:text-purple-100"
+                    )}
                     size={"sm"}
                   >
                     {
@@ -382,7 +312,7 @@ const SettingPage = () => {
                             <div className="relative">
                               <Input
                                 {...field}
-                                className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                className="w-full pr-10 shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Enter your password"
                                 autoComplete="off"
@@ -419,7 +349,7 @@ const SettingPage = () => {
                             <div className="relative">
                               <Input
                                 {...field}
-                                className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                className="w-full pr-10 shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Enter your confirm password"
                                 autoComplete="off"
@@ -445,9 +375,13 @@ const SettingPage = () => {
                       )}
                     />
                   </div>
+                  <Separator className='my-2' />
                   <Button
                     type="submit"
-                    className="w-fit rounded-xs px-8 shadow-none bg-purple-500 hover:bg-purple-600 text-white"
+                    className={cn(
+                      "w-fit rounded-sm mt-2 bg-purple-100 hover:bg-purple-200 text-purple-600 hover:text-purple-700",
+                      "dark:bg-purple-800 dark:hover:bg-purple-900 dark:text-purple-200 dark:hover:text-purple-100"
+                    )}
                     size={"sm"}
                   >
                     {
@@ -478,10 +412,12 @@ const SettingPage = () => {
             <div className='grid gap-2'>
               {linkedAccounts.map((account) => (
                 <div key={account.id} className='flex items-center justify-between p-3 border rounded-sm'>
-                  <div className='flex items-center'>
-                    <Avatar className="size-[42px] rounded-full">
+                  <div className='flex items-center gap-2'>
+                    <Avatar className="size-[34px] rounded-full">
                       {account.image && (
-                        <AvatarImage src={account.image} alt={account.socialName} />
+                        <AvatarImage src={account.image} alt={account.socialName} className={cn(
+                          account.socialName === "GitHub" && "dark:bg-white"
+                        )} />
                       )}
                       <AvatarFallback className="rounded-full">
                         {account.accountName.charAt(0).toUpperCase()}{account.accountName.charAt(1).toUpperCase()}
@@ -493,7 +429,10 @@ const SettingPage = () => {
                       <p className='text-xs text-gray-500'>{account.email}</p>
                     </div>
                   </div>
-                  <Button variant='destructive' size='sm' className='rounded-xs bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600 '>Disconnect</Button>
+                  <Button variant='destructive' size='sm' className={cn(
+                    "rounded-sm bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600",
+                    "dark:bg-red-800 dark:hover:bg-red-900 dark:text-slate-200 dark:hover:text-slate-100"
+                  )}>Disconnect</Button>
                 </div>
               ))}
             </div>
@@ -527,7 +466,10 @@ const SettingPage = () => {
                   </div>
                   {
                     !session.isCurrentlyActive && (
-                      <Button variant='destructive' size='sm' className='rounded-xs bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600 '>Clear</Button>
+                      <Button variant='destructive' size='sm' className={cn(
+                        "rounded-sm bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600",
+                        "dark:bg-red-800 dark:hover:bg-red-900 dark:text-slate-200 dark:hover:text-slate-100"
+                      )}>Clear</Button>
                     )
                   }
                 </div>
@@ -536,9 +478,9 @@ const SettingPage = () => {
           </CardContent>
         </Card>
 
-        <Card className='shadow-none border border-border bg-white dark:bg-gray-900'>
+        <Card className='shadow-none border border-red-500 dark:border-red-900 bg-white dark:bg-gray-900'>
           <CardHeader>
-            <CardTitle className='text-lg md:text-2xl'>Danger Zone</CardTitle>
+            <CardTitle className='text-lg md:text-2xl text-red-500 dark:text-red-700'>Danger Zone</CardTitle>
             <CardDescription>
               Manage irreversible account actions.
             </CardDescription>
@@ -546,13 +488,16 @@ const SettingPage = () => {
           <Separator className='my-2' />
           <CardContent>
             <div className='grid gap-4'>
-              <div className='flex items-center p-4 border rounded-sm border-red-500 bg-red-50'>
+              <div className='flex items-center p-4 border rounded-sm border-red-500 dark:border-red-900 bg-red-50 dark:bg-slate-950'>
                 <div className='flex flex-col gap-2'>
-                  <p className='text-base font-medium text-red-500 flex items-center gap-2'> <TriangleAlert size={16} /> Delete Your Account</p>
+                  <p className='text-base font-medium text-red-500 flex items-center gap-2'> <TriangleAlert className='size-5 mb-0.5' /> Delete Your Account</p>
                   <p className='text-sm text-gray-500'>Once you delete your account, there is no going back. All your data, projects, and personal information will be permanently removed.</p>
                 </div>
               </div>
-              <Button variant='destructive' size='sm' className='w-fit rounded-xs bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600 '>Delete Account</Button>
+              <Button variant='destructive' size='sm' className={cn(
+                "rounded-sm bg-red-100 hover:bg-red-200 text-red-500 hover:text-red-600",
+                "dark:bg-red-800 dark:hover:bg-red-900 dark:text-slate-200 dark:hover:text-slate-100"
+              )}>Delete Account</Button>
             </div>
           </CardContent>
         </Card>

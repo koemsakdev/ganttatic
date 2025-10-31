@@ -1,18 +1,12 @@
 "use client"
 
 import * as React from "react"
-import {
-    Calculator,
-    Calendar,
-    Smile,
-} from "lucide-react"
 
 import {
     CommandDialog,
     CommandEmpty,
     CommandGroup,
     CommandInput,
-    CommandItem,
     CommandList,
 } from "@/components/ui/command"
 
@@ -25,9 +19,9 @@ interface SearchDialogProps {
 export function SearchDialog({ children, open, onOpenChange }: SearchDialogProps) {
 
     return (
-        <CommandDialog open={open} onOpenChange={onOpenChange} className="rounded-[4px] shadow-none w-full">
+        <CommandDialog open={open} onOpenChange={onOpenChange} className="shadow-none">
             <CommandInput placeholder="Type a project name or search..." />
-            <CommandList className="p-0">
+            <CommandList className="px-0 py-2">
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup className="py-2">
                     <div className="flex flex-col gap-y-2">

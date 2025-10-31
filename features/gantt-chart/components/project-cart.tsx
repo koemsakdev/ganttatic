@@ -26,7 +26,7 @@ const ProjectCard = ({ data, className }: ProjectCardProps) => {
     return (
         <Card className={cn(
             className,
-            'w-full shadow-none rounded-xs gap-y-2 cursor-pointer hover:bg-slate-50 hover:border-purple-400'
+            'w-full shadow-none gap-y-2 cursor-pointer hover:bg-slate-50 hover:border-purple-400 dark:hover:border-purple-800 dark:hover:bg-gray-900 transition-all duration-400 ease-in-out'
         )}
             onClick={() => router.push(`/gantt-chart/${data.id}`)}
         >

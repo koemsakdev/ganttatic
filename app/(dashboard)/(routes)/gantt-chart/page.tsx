@@ -35,7 +35,7 @@ const GanttChart = () => {
                 <div className='flex gap-2'>
                     <Button
                         variant={"secondary"}
-                        className="flex w-xs items-center justify-between bg-background border input-border rounded-xs px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="flex w-xs items-center justify-between bg-background border input-border rounded-sm px-3 text-sm text-muted-foreground dark:bg-accent hover:bg-accent hover:text-accent-foreground transition-colors"
                         onClick={searchProject}
                     >
                         <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ const GanttChart = () => {
                             <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
                         </div>
                     </Button>
-                    <Button onClick={createProject} variant={"secondary"} className={"bg-purple-200 hover:bg-purple-300 text-purple-700 hover:text-purple-800 rounded-xs"}>
+                    <Button onClick={createProject} variant={"secondary"} className={"bg-purple-200 hover:bg-purple-300 dark:bg-purple-800 hover:dark:bg-purple-900 text-purple-700 hover:text-purple-800 dark:text-purple-200 dark:hover:text-purple-100 rounded-sm"}>
                         <BadgePlus />
                         Create Project
                     </Button>
@@ -55,7 +55,7 @@ const GanttChart = () => {
             <Separator className='my-4' />
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2'>
                 {data.map((project) => (
-                    <ProjectCard key={project.title} data={project} className='border-[1px] border-purple-200' />
+                    <ProjectCard key={project.title} data={project} className='border-[1px] border-purple-200 dark:border-purple-900' />
                 ))}
             </div>
 

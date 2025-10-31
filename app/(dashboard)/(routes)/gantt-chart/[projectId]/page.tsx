@@ -15,7 +15,7 @@ const GanttChatId = () => {
     <div className='min-h-full w-full'>
       <div className={"flex flex-col md:flex-row items-center justify-between gap-2"}>
         <div className='flex h-5 items-center space-x-4 text-sm'>
-          <Button variant={"ghost"} onClick={() => router.back()} className={"text-purple-700 hover:text-purple-800 rounded-xs bg-transparent hover:bg-transparent !px-0"}>
+          <Button variant={"ghost"} onClick={() => router.back()} className={"text-purple-700 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-500 rounded-xs bg-transparent hover:bg-transparent dark:hover:bg-transparent !px-0"}>
             <ArrowLeft />
             Back
           </Button>

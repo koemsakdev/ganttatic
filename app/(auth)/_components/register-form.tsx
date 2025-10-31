@@ -88,11 +88,11 @@ export function RegisterForm({
         console.table(data);
     };
     return (
-        <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xs p-6 shadow-none md:shadow-2xs", className)} {...props}>
+        <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xs p-6 shadow-none md:shadow-2xs bg-transparent md:bg-white md:dark:bg-gray-800", className)} {...props}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-6">
-                            
+
                         <div className="flex flex-col items-center gap-2">
                             <Link
                                 href="/"
@@ -216,7 +216,7 @@ export function RegisterForm({
                             </div>
                             <Button
                                 type="submit"
-                                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700">
+                                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100">
                                 {
                                     isSubmitting ? (
                                         <div className="flex items-center">
@@ -228,18 +228,26 @@ export function RegisterForm({
                                 }
                             </Button>
                         </div>
-                        <div
-                            className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                            <span className="bg-background text-muted-foreground relative z-10 px-2">
+                        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                            <span className="bg-gray-50 dark:bg-gray-900 md:bg-background md:dark:bg-gray-800 text-muted-foreground relative z-10 px-2">
                                 Or Continue With
                             </span>
                         </div>
                         <div className="grid gap-1 sm:grid-cols-2">
-                            <Button variant="secondary" type="button" className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500">
+                            <Button
+                                variant="secondary"
+                                type="button"
+                                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                            >
                                 <FaGithub className="h-4 w-4" />
                                 Continue with GitHub
                             </Button>
-                            <Button variant="secondary" type="button" className="w-full shadow-none rounded-xs hover:bg-purple-200 hover:text-purple-500">
+
+                            <Button
+                                variant="secondary"
+                                type="button"
+                                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                            >
                                 <FcGoogle className="h-4 w-4" />
                                 Continue with Google
                             </Button>

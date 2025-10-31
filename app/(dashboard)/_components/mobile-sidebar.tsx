@@ -1,17 +1,24 @@
 import { Menu } from "lucide-react";
 import {
     Sheet,
-    SheetContent, SheetDescription, SheetHeader, SheetTitle,
+    SheetContent, SheetHeader, SheetTitle,
     SheetTrigger
 } from "@/components/ui/sheet";
-import {Sidebar} from "@/app/(dashboard)/_components/sidebar";
-import {Logo} from "@/app/(dashboard)/_components/logo";
-import {SidebarRoute} from "@/app/(dashboard)/_components/sidebar-route";
+import { Logo } from "@/app/(dashboard)/_components/logo";
+import { SidebarRoute } from "@/app/(dashboard)/_components/sidebar-route";
+import { cn } from "@/lib/utils";
 
-export const MobileSidebar = () => {
+interface MobileSidebarProps {
+    isAuthLayout?: boolean
+}
+
+export const MobileSidebar = ({ isAuthLayout = false }: MobileSidebarProps) => {
     return (
         <Sheet>
-            <SheetTrigger className={"md:hidden pr-4 opacity-75 hover:opacity-55 transition-opacity duration-300"}>
+            <SheetTrigger className={cn(
+                "lg:hidden pr-4 opacity-75 hover:opacity-55 transition-opacity duration-300",
+                isAuthLayout && "!hidden"
+            )}>
                 <Menu />
             </SheetTrigger>
             <SheetContent side={"left"} className={"p-0 bg-white"}>

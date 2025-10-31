@@ -4,13 +4,13 @@ export const linkedAccounts = [
     socialName: 'Google',
     accountName: 'Koemsak Mean',
     email: 'koemsak.mean@gmail.com',
-    image: '',
+    image: 'google.png',
   },
   {
     id: 2,
     socialName: 'GitHub',
     accountName: 'koemsakdev',
     email: 'koemsak.mean@gmail.com',
-    image: 'https://avatars.githubusercontent.com/u/140032930?v=4&size=64',
+    image: 'github.png',
   },
 ]
