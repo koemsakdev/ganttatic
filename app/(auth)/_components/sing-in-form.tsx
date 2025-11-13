@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
-import { Eye, EyeOff, Loader, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 
 import {
   Form,
@@ -28,6 +28,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
+import { authClient } from "@/lib/auth-client";
 
 export function SignInForm({
   className,
@@ -35,7 +36,6 @@ export function SignInForm({
 }: React.ComponentProps<"div">) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const { showToast } = useToast();
 
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -50,36 +50,37 @@ export function SignInForm({
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    // try {
-    //   const response = await fetch("/api/auth/sign-in", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    //   const result = await response.json();
-    //   if (response.ok) {
-    //     showToast(
-    //       "Success",
-    //       result.message || "Signed in successfully",
-    //       "success"
-    //     );
-    //     router.push("/");
-    //   } else {
-    //     showToast(
-    //       "Error",
-    //       result.message || "An unexpected error occurred",
-    //       "error"
-    //     );
-    //   }
-    // } catch (error) {
-    //   showToast(
-    //     "Error",
-    //     error instanceof Error ? error.message : "An unexpected error occurred",
-    //     "error"
-    //   );
-    // }
+    try {
+      await authClient.signIn.email(
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          remember: data.remember,
+          onSuccess: () => {
+            showToast("Success", "You have signed in successfully", "success");
+            router.refresh();
+            router.push("/");
+          },
+          onError: (error) => {
+            showToast(
+              "Error",
+              error instanceof Error
+                ? error.message
+                : "An unexpected error occurred",
+              "error"
+            );
+          },
+        }
+      );
+    } catch (error) {
+      showToast(
+        "Error",
+        error instanceof Error ? error.message : "An unexpected error occurred",
+        "error"
+      );
+    }
 
     console.table(data);
   };

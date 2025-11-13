@@ -21,7 +21,7 @@ export const MobileSidebar = ({ isAuthLayout = false }: MobileSidebarProps) => {
             )}>
                 <Menu />
             </SheetTrigger>
-            <SheetContent side={"left"} className={"p-0 bg-white"}>
+            <SheetContent side={"left"} className={"p-0 bg-white dark:bg-slate-800 overflow-y-auto"}>
                 <SheetHeader>
                     <SheetTitle>
                         <div className={"p-0 pl-2 w-full"}>

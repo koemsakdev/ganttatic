@@ -3,6 +3,7 @@ import {Sidebar} from "@/app/(dashboard)/_components/sidebar";
 import {Navbar} from "@/app/(dashboard)/_components/navbar";
 import { CreateProjectModal } from "@/features/gantt-chart/components/create-project-modal";
 import { SearchProjectCommand } from "@/features/gantt-chart/components/search-project-command";
+import {ThemeButton} from "@/components/theme-button";
 
 const DashboardLayout = ({children}: {children: React.ReactNode }) => {
     return (

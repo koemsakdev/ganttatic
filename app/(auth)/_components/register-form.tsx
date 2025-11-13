@@ -51,39 +51,39 @@ export function RegisterForm({
     const { isSubmitting } = form.formState;
 
     const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-        // try {
-        //     await authClient.signUp.email(
-        //         {
-        //             name: `${data.firstName} ${data.lastName}`,
-        //             email: data.email,
-        //             password: data.password,
-        //         },
-        //         {
-        //             onSuccess: (ctx) => {
-        //                 showToast(
-        //                     "Success",
-        //                     "Account created successfully",
-        //                     "success"
-        //                 );
+        try {
+            await authClient.signUp.email(
+                {
+                    name: `${data.firstName} ${data.lastName}`,
+                    email: data.email,
+                    password: data.password,
+                },
+                {
+                    onSuccess: () => {
+                        showToast(
+                            "Success",
+                            "Registration successful! Please check your email to verify your account.",
+                            "success"
+                        );
 
-        //                 router.push("/");
-        //             },
-        //             onError: (ctx) => {
-        //                 showToast(
-        //                     "Error",
-        //                     ctx.error.message || "An unexpected error occurred",
-        //                     "error"
-        //                 )
-        //             },
-        //         }
-        //     )
-        // } catch (error) {
-        //     showToast(
-        //         "Error",
-        //         error instanceof Error ? error.message : "An unexpected error occurred",
-        //         "error"
-        //     );
-        // }
+                        router.push("/");
+                    },
+                    onError: (ctx) => {
+                        showToast(
+                            "Error",
+                            ctx.error.message || "An unexpected error occurred",
+                            "error"
+                        )
+                    },
+                }
+            )
+        } catch (error) {
+            showToast(
+                "Error",
+                error instanceof Error ? error.message : "An unexpected error occurred",
+                "error"
+            );
+        }
 
         console.table(data);
     };
@@ -92,7 +92,6 @@ export function RegisterForm({
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-6">
-
                         <div className="flex flex-col items-center gap-2">
                             <Link
                                 href="/"

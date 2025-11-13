@@ -1,54 +1,47 @@
 "use client"
 
 import * as React from "react"
-import { BadgeCheck, Moon, Sun } from "lucide-react"
+import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import * as SwitchPrimitives from "@radix-ui/react-switch"
 import { cn } from "@/lib/utils"
 
 export function ThemeButton() {
     const { theme, setTheme, resolvedTheme } = useTheme();
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return <div className="h-6 w-11" />;
+    }
+
     const currentTheme = theme === "system" ? resolvedTheme : theme;
+    const isDark = currentTheme === "dark";
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="focus-visible:outline-0 focus-visible:shadow-none focus:shadow-none rounded-full">
-                    <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                    <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-                    <span className="sr-only">Toggle theme</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="dark:bg-slate-800">
-                <DropdownMenuItem
-                    className={cn(
-                        "cursor-pointer flex justify-between dark:hover:bg-slate-900 hover:bg-gray-200",
-                        currentTheme === "light" && "dark:hover:bg-slate-900 bg-gray-100 dark:bg-slate-900"
-                    )}
-                    onClick={() => setTheme("light")}
-                >
-                    <span className="flex gap-2"> <Sun /> Light </span>
-                    {currentTheme === "light" && <BadgeCheck className="h-4 w-4" />}
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                    className={cn(
-                        "cursor-pointer flex justify-between dark:hover:bg-slate-900 hover:bg-gray-200",
-                        currentTheme === "dark" && "dark:hover:bg-slate-900 dark:bg-slate-900 bg-gray-50"
-                    )}
-                    onClick={() => setTheme("dark")}
-                >
-                    <span className="flex gap-2"> <Moon /> Dark </span>
-                    {currentTheme === "dark" && <BadgeCheck className="h-4 w-4" />}
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
+        <SwitchPrimitives.Root
+            checked={isDark}
+            onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+            className={cn(
+                "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
+                isDark ? "bg-gray-900" : "bg-amber-500/50"
+            )}
+        >
+            <SwitchPrimitives.Thumb
+                className={cn(
+                    "pointer-events-none flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-lg ring-0 transition-transform",
+                    isDark ? "translate-x-5" : "translate-x-0"
+                )}
+            >
+                {isDark ? (
+                    <Moon className="h-3 w-3 text-white" />
+                ) : (
+                    <Sun className="h-3 w-3 text-amber-500" />
+                )}
+            </SwitchPrimitives.Thumb>
+        </SwitchPrimitives.Root>
+    );
 }
