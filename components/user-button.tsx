@@ -7,9 +7,28 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { useToast } from "@/hooks/useToast";
 
 export const UserButton = () => {
     const router = useRouter();
+    const { showToast } = useToast();
+    const signOut = async () => {
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/sign-in");
+                },
+                onError: (ctx) => {
+                    showToast(
+                        "Error",
+                        ctx.error.message,
+                        "error"
+                    );
+                }
+            }
+        })
+    }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={"hover:bg-transparent"} asChild={true}>
@@ -32,7 +51,7 @@ export const UserButton = () => {
                     <Settings className="size-4 text-black dark:text-white" />
                     <span>Settings</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer" onClick={signOut}>
                     <LogOut className="size-4 text-red-500" />
                     <span className="text-red-500">Logout</span>
                 </DropdownMenuItem>

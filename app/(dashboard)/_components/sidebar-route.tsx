@@ -1,6 +1,6 @@
 "use client";
 
-import {BarChart2, ChartNoAxesCombined, CircleGauge, Settings} from "lucide-react";
+import {BarChart2, ChartNoAxesCombined, CircleGauge, Settings, Wrench} from "lucide-react";
 import {SidebarItem} from "@/app/(dashboard)/_components/sidebar-item";
 
 const menuRoutes = [
@@ -24,6 +24,11 @@ const menuRoutes = [
         href: "/settings",
         icon: Settings
     },
+    {
+        name: "RSA Tool",
+        href: "/rsa-tool",
+        icon: Wrench
+    }
 ];
 
 

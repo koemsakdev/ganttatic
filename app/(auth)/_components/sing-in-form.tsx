@@ -64,11 +64,10 @@ export function SignInForm({
             router.push("/");
           },
           onError: (error) => {
+            console.log(error);
             showToast(
-              "Error",
-              error instanceof Error
-                ? error.message
-                : "An unexpected error occurred",
+              error.response.statusText ?? "Error",
+              error.error.message ?? "An unexpected error occurred",
               "error"
             );
           },
