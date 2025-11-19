@@ -63,11 +63,14 @@ export function SignInForm({
             router.refresh();
             router.push("/");
           },
-          onError: (error) => {
-            console.log(error);
+          onError: ({ response, error: betterError }) => {
+            const serverMessage =
+              betterError.error?.message ??
+              betterError.message ??
+              "An unexpected error occurred";
             showToast(
-              error.response.statusText ?? "Error",
-              error.error.message ?? "An unexpected error occurred",
+              response.statusText ?? betterError.statusText ?? "Error",
+              serverMessage,
               "error"
             );
           },
@@ -80,8 +83,6 @@ export function SignInForm({
         "error"
       );
     }
-
-    console.table(data);
   };
 
   return (
@@ -120,6 +121,7 @@ export function SignInForm({
                           autoCorrect="off"
                           spellCheck="false"
                           className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                          disabled={isSubmitting}
                         />
                       </FormControl>
                       <FormMessage className="text-xs text-red-500" />
@@ -154,12 +156,14 @@ export function SignInForm({
                             autoComplete="off"
                             autoCorrect="off"
                             spellCheck="false"
+                            disabled={isSubmitting}
                           />
                           <Button
                             variant="ghost"
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 cursor-pointer shadow-none hover:bg-transparent"
+                            disabled={isSubmitting}
                           >
                             {showPassword ? (
                               <Eye className="h-4 w-4" />
@@ -187,6 +191,7 @@ export function SignInForm({
                           className={
                             "data-[state=checked]:border-purple-600 data-[state=checked]:bg-purple-600 data-[state=checked]:text-white dark:data-[state=checked]:border-purple-700 dark:data-[state=checked]:bg-purple-700 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                           }
+                          disabled={isSubmitting}
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
@@ -220,6 +225,7 @@ export function SignInForm({
                 variant="secondary"
                 type="button"
                 className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                disabled={isSubmitting}
               >
                 <FaGithub className="h-4 w-4" />
                 Continue with GitHub
@@ -229,6 +235,7 @@ export function SignInForm({
                 variant="secondary"
                 type="button"
                 className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                disabled={isSubmitting}
               >
                 <FcGoogle className="h-4 w-4" />
                 Continue with Google

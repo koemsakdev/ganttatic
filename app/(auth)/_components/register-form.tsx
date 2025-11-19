@@ -43,8 +43,7 @@ export function RegisterForm({
             firstName: "",
             lastName: "",
             email: "",
-            password: "",
-            image: "",
+            password: ""
         },
     });
 
@@ -68,12 +67,16 @@ export function RegisterForm({
 
                         router.push("/");
                     },
-                    onError: (ctx) => {
+                    onError: ({ response, error: betterError }) => {
+                        const serverMessage =
+                            betterError.error?.message ??
+                            betterError.message ??
+                            "An unexpected error occurred";
                         showToast(
-                            "Error",
-                            ctx.error.message || "An unexpected error occurred",
+                            response.statusText ?? betterError.statusText ?? "Error",
+                            serverMessage,
                             "error"
-                        )
+                        );
                     },
                 }
             )
