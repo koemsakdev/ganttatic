@@ -64,8 +64,6 @@ export function RegisterForm({
                             "Registration successful! Please check your email to verify your account.",
                             "success"
                         );
-
-                        router.push("/");
                     },
                     onError: ({ response, error: betterError }) => {
                         const serverMessage =

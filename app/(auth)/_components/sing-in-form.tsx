@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import React, { useState } from "react";
+import { APIError } from "better-auth/api";
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -63,14 +64,11 @@ export function SignInForm({
             router.refresh();
             router.push("/");
           },
-          onError: ({ response, error: betterError }) => {
-            const serverMessage =
-              betterError.error?.message ??
-              betterError.message ??
-              "An unexpected error occurred";
+          onError: (error) => {
+            console.log(error);
             showToast(
-              response.statusText ?? betterError.statusText ?? "Error",
-              serverMessage,
+              error.error.statusText ?? "Error",
+              error.error.message ?? "An unexpected error occurred",
               "error"
             );
           },
@@ -79,7 +77,7 @@ export function SignInForm({
     } catch (error) {
       showToast(
         "Error",
-        error instanceof Error ? error.message : "An unexpected error occurred",
+        error instanceof APIError ? error.message : "An unexpected error occurred",
         "error"
       );
     }
@@ -120,7 +118,7 @@ export function SignInForm({
                           autoComplete="off"
                           autoCorrect="off"
                           spellCheck="false"
-                          className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                          className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                           disabled={isSubmitting}
                         />
                       </FormControl>
@@ -150,7 +148,7 @@ export function SignInForm({
                         <div className="relative">
                           <Input
                             {...field}
-                            className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                            className="w-full pr-10 shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
                             autoComplete="off"
@@ -204,7 +202,8 @@ export function SignInForm({
 
               <Button
                 type="submit"
-                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100"
+                className="w-full rounded-sm shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100"
+                disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <div className="flex items-center">
@@ -224,21 +223,21 @@ export function SignInForm({
               <Button
                 variant="secondary"
                 type="button"
-                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
                 disabled={isSubmitting}
               >
-                <FaGithub className="h-4 w-4" />
-                Continue with GitHub
+                <FaGithub className="h-4 w-4 mb-0.5" />
+                GitHub
               </Button>
 
               <Button
                 variant="secondary"
                 type="button"
-                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
                 disabled={isSubmitting}
               >
-                <FcGoogle className="h-4 w-4" />
-                Continue with Google
+                <FcGoogle className="h-4 w-4 mb-0.5" />
+                Google
               </Button>
             </div>
 

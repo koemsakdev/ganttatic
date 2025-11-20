@@ -4,6 +4,7 @@ import type { Session } from "@prisma/client";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 import { env } from "./env";
+import { SendEmail } from "@/emails/send-email";
 
 
 export const auth = betterAuth({
@@ -21,27 +22,15 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    sendVerificationEmail: async ({user, url}) => {
-      const mailersend = new Mailersend({
-        apiKey: env.MAILERSEND_API_KEY!,
-      });
-      await mailersend.send({
-        from: {
-          email: "no-reply@example.com",
-          name: "Ganttatic",
-        },
-        to: [{
-          email: user.email!,
-          name: user.name!,
-        }],
-        subject: "Verify your email",
-        html: `Click <a href="${url}">here</a> to verify your email.`,
-      });
+    sendVerificationEmail: async ({ user, url }) => {
+      const verificationUrl = url.replace("/api", "");
+      console.log(verificationUrl);
+      await SendEmail({ user, url: verificationUrl });
     }
   },
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    requireEmailVerification: true
   },
   callbacks: {
     async sessionCreate({
