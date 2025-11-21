@@ -23,9 +23,9 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
-      const verificationUrl = url.replace("/api", "");
-      console.log(verificationUrl);
-      await SendEmail({ user, url: verificationUrl });
+      // const verificationUrl = url.replace("/api", "");
+      console.log(url)
+      await SendEmail({ user, url });
     }
   },
   emailAndPassword: {

@@ -93,7 +93,7 @@ export function SignInForm({
                 href="/"
                 className="flex flex-col items-center gap-2 font-medium"
               >
-                <div className="flex items-center justify-center mb-2">
+                <div className="flex items-center justify-center mb-2 animate-in zoom-in-50 duration-300">
                   <Image
                     src={"/ganttastic.svg"}
                     alt="Auth Logo"

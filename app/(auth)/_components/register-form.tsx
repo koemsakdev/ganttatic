@@ -56,6 +56,7 @@ export function RegisterForm({
                     name: `${data.firstName} ${data.lastName}`,
                     email: data.email,
                     password: data.password,
+                    callbackURL: `/email-verified`
                 },
                 {
                     onSuccess: () => {
@@ -98,7 +99,7 @@ export function RegisterForm({
                                 href="/"
                                 className="flex flex-col items-center gap-2 font-medium"
                             >
-                                <div className="flex items-center justify-center mb-2">
+                                <div className="flex items-center justify-center mb-2 animate-in zoom-in-50 duration-300">
                                     <Image
                                         src={"/ganttastic.svg"}
                                         alt="Auth Logo"
@@ -124,7 +125,8 @@ export function RegisterForm({
                                                         autoComplete="off"
                                                         autoCorrect="off"
                                                         spellCheck="false"
-                                                        className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        disabled={isSubmitting}
                                                     />
                                                 </FormControl>
                                                 <FormMessage className="text-xs text-red-500" />
@@ -146,7 +148,8 @@ export function RegisterForm({
                                                         autoComplete="off"
                                                         autoCorrect="off"
                                                         spellCheck="false"
-                                                        className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        disabled={isSubmitting}
                                                     />
                                                 </FormControl>
                                                 <FormMessage className="text-xs text-red-500" />
@@ -169,7 +172,8 @@ export function RegisterForm({
                                                     autoComplete="off"
                                                     autoCorrect="off"
                                                     spellCheck="false"
-                                                    className="w-full shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                    className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                    disabled={isSubmitting}
                                                 />
                                             </FormControl>
                                             <FormMessage className="text-xs text-red-500" />
@@ -188,18 +192,20 @@ export function RegisterForm({
                                                 <div className="relative">
                                                     <Input
                                                         {...field}
-                                                        className="w-full pr-10 shadow-none rounded-xs focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full pr-10 shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
                                                         type={showPassword ? "text" : "password"}
                                                         placeholder="Enter your password"
                                                         autoComplete="off"
                                                         autoCorrect="off"
                                                         spellCheck="false"
+                                                        disabled={isSubmitting}
                                                     />
                                                     <Button
                                                         variant="ghost"
                                                         type="button"
                                                         onClick={() => setShowPassword(!showPassword)}
                                                         className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-0 cursor-pointer shadow-none hover:bg-transparent"
+                                                        disabled={isSubmitting}
                                                     >
                                                         {showPassword ? (
                                                             <Eye className="h-4 w-4" />
@@ -216,7 +222,9 @@ export function RegisterForm({
                             </div>
                             <Button
                                 type="submit"
-                                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100">
+                                className="w-full rounded-sm shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100"
+                                disabled={isSubmitting}
+                            >
                                 {
                                     isSubmitting ? (
                                         <div className="flex items-center">
@@ -237,19 +245,21 @@ export function RegisterForm({
                             <Button
                                 variant="secondary"
                                 type="button"
-                                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                disabled={isSubmitting}
                             >
                                 <FaGithub className="h-4 w-4" />
-                                Continue with GitHub
+                                GitHub
                             </Button>
 
                             <Button
                                 variant="secondary"
                                 type="button"
-                                className="w-full border border-border shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                disabled={isSubmitting}
                             >
                                 <FcGoogle className="h-4 w-4" />
-                                Continue with Google
+                                Google
                             </Button>
                         </div>
                     </div>
