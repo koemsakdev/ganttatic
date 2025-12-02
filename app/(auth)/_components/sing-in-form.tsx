@@ -44,7 +44,7 @@ export function SignInForm({
     defaultValues: {
       email: "",
       password: "",
-      remember: true,
+      remember: true
     },
   });
 
@@ -55,14 +55,13 @@ export function SignInForm({
       await authClient.signIn.email(
         {
           email: data.email,
-          password: data.password,
+          password: data.password
         },
         {
           remember: data.remember,
           onSuccess: () => {
-            showToast("Success", "You have signed in successfully", "success");
-            router.refresh();
             router.push("/");
+            showToast("Success", "You have signed in successfully", "success");
           },
           onError: (error) => {
             console.log(error);

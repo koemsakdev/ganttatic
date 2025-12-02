@@ -28,27 +28,27 @@ const GanttChart = () => {
 
     return (
         <div className='w-full h-full'>
-            <div className={"flex flex-col md:flex-row items-center justify-between gap-2"}>
-                <h1 className={"text-2xl font-bold"}>
+            <div className={"flex flex-row items-center justify-between gap-2"}>
+                <h1 className={"text-2xl font-bold line-clamp-1"}>
                     Gantt Chart Management
                 </h1>
                 <div className='flex gap-2'>
                     <Button
                         variant={"secondary"}
-                        className="flex w-xs items-center justify-between bg-background border input-border rounded-sm px-3 text-sm text-muted-foreground dark:bg-accent hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="flex md:w-xs items-center justify-between bg-background border input-border rounded-sm px-3 text-sm text-muted-foreground dark:bg-accent hover:bg-accent hover:text-accent-foreground transition-colors"
                         onClick={searchProject}
                     >
                         <div className="flex items-center gap-2">
                             <Search className="h-4 w-4" />
-                            <span>Search...</span>
+                            <span className='hidden md:block'>Search...</span> 
                         </div>
-                        <div className="flex items-center gap-1 text-xs">
+                        <div className="hidden md:flex items-center gap-1 text-xs">
                             <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
                         </div>
                     </Button>
                     <Button onClick={createProject} variant={"secondary"} className={"bg-purple-200 hover:bg-purple-300 dark:bg-purple-800 hover:dark:bg-purple-900 text-purple-700 hover:text-purple-800 dark:text-purple-200 dark:hover:text-purple-100 rounded-sm"}>
                         <BadgePlus />
-                        Create Project
+                        <span className='hidden md:block'>Create Project</span>
                     </Button>
                 </div>
             </div>
@@ -58,7 +58,6 @@ const GanttChart = () => {
                     <ProjectCard key={project.title} data={project} className='border-[1px] border-purple-200 dark:border-purple-900' />
                 ))}
             </div>
-
         </div>
     )
 }

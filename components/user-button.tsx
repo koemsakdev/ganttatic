@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/useToast";
 
 export const UserButton = () => {
     const router = useRouter();
+    const { data: session } = authClient.useSession();
     const { showToast } = useToast();
     const signOut = async () => {
         await authClient.signOut({
@@ -32,19 +33,27 @@ export const UserButton = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={"hover:bg-transparent"} asChild={true}>
-                <Avatar className={"cursor-pointer"}>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                <Avatar className={"cursor-pointer border border-neutral-300 dark:border-neutral-500"}>
+                    {
+                        session?.user.image && (
+                            <AvatarImage src={session?.user.image} />
+                        )
+                    }
+                    <AvatarFallback>{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align={"end"}>
                 <div className="flex flex-col justify-center items-center gap-2 px-2.5 py-2">
                     <Avatar className="size-12 text-xl rounded-full border border-neutral-300">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        {
+                            session?.user.image && (
+                                <AvatarImage src={session?.user.image} />
+                            )
+                        }
+                        <AvatarFallback>{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200"> Koemsak Mean </p>
-                    <p className="text-xs font-medium text-neutral-500"> koemsak.mean@gmail.com </p>
+                    <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200"> {session?.user.name} </p>
+                    <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300"> {session?.user.email}</p>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/settings")}>

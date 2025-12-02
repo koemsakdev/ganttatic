@@ -6,7 +6,6 @@ import { prisma } from "./db";
 import { env } from "./env";
 import { SendEmail } from "@/emails/send-email";
 
-
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
@@ -23,8 +22,6 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
-      // const verificationUrl = url.replace("/api", "");
-      console.log(url)
       await SendEmail({ user, url });
     }
   },
@@ -40,18 +37,27 @@ export const auth = betterAuth({
       session: Session;
       request: Request;
     }) {
-      const forwardedFor = request.headers.get("x-forwarded-for");
-      const ip = forwardedFor?.split(",")[0]?.trim() || null;
-      const userAgent = request.headers.get("user-agent") || "Unknown";
-      const parser = new UAParser(userAgent);
-      const browser = parser.getBrowser().name || "Unknown Browser";
-      const os = parser.getOS().name || "Unknown OS";
+      const rawUA =
+        request.headers.get("x-client-ua") ??
+        request.headers.get("user-agent") ??
+        request.headers.get("User-Agent") ??
+        "Unknown";
+
+      const parser = new UAParser(rawUA);
+      const browser = parser.getBrowser().name ?? "Browser";
+      const os = parser.getOS().name ?? "OS";
       const deviceName = `${browser} on ${os}`;
+
+      const forwardedFor = request.headers.get("x-forwarded-for");
+      const ip = forwardedFor?.split(",")[0]?.trim() ?? null;
+
+      console.log("Session Create Callback:", { ip, rawUA, deviceName });
+
       await prisma.session.update({
         where: { id: session.id },
         data: {
           ipAddress: ip,
-          userAgent,
+          userAgent: rawUA,
           deviceName
         },
       });
