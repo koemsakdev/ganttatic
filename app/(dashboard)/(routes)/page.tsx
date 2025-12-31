@@ -1,6 +1,6 @@
 "use client";
 
-import PendingPage from "@/app/pending";
+import Loading from "@/app/loading";
 import { authClient } from "@/lib/auth-client";
 
 // 1. Remove 'async' here
@@ -12,7 +12,7 @@ export default function Home() {
 
   if (isPending) {
     return (
-      <PendingPage />
+      <Loading />
     )
   };
 

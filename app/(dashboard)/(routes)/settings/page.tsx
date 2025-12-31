@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image'
-import React, {useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Separator } from '@/components/ui/separator'
 import {
@@ -89,10 +89,10 @@ async function getCroppedImg(
 
 // Image Crop Dialog Component
 function ImageCropDialog({
-                             image,
-                             onCropComplete,
-                             onCancel,
-                         }: {
+    image,
+    onCropComplete,
+    onCancel,
+}: {
     image: string
     onCropComplete: (croppedImage: File) => void
     onCancel: () => void
@@ -308,16 +308,16 @@ const SettingPage = () => {
                                                         ) : (
                                                             <Avatar className={cn(
                                                                 "size-[170px] rounded-full mx-auto",
-                                                                "border-2 border-dashed cursor-pointer transition-colors",
-                                                                "hover:border-purple-400 dark:hover:border-purple-800 hover:bg-purple-100 dark:hover:bg-slate-900",
-                                                                isDragOver && 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                                                                "border-2 border-dashed border-purple-300 dark:border-purple-900 cursor-pointer",
+                                                                "hover:border-purple-400 dark:hover:border-purple-800",
+                                                                isDragOver && 'border-purple-500 dark:border-purple-700'
                                                             )}
-                                                                    onClick={() => inputRef.current?.click()}
-                                                                    onDragOver={handleDragOver}
-                                                                    onDragLeave={handleDragLeave}
-                                                                    onDrop={handleDrop}
+                                                                onClick={() => inputRef.current?.click()}
+                                                                onDragOver={handleDragOver}
+                                                                onDragLeave={handleDragLeave}
+                                                                onDrop={handleDrop}
                                                             >
-                                                                <AvatarFallback className="rounded-md">
+                                                                <AvatarFallback className="rounded-md bg-transparent">
                                                                     <Upload className="size-[32px] text-purple-500 dark:text-purple-400" />
                                                                 </AvatarFallback>
                                                             </Avatar>
@@ -414,7 +414,7 @@ const SettingPage = () => {
                                             />
                                         </div>
                                     </div>
-                                    <FormField
+                                    {/* <FormField
                                         control={form.control}
                                         name="email"
                                         render={({ field }) => (
@@ -445,7 +445,7 @@ const SettingPage = () => {
                                                 <FormMessage />
                                             </FormItem>
                                         )}
-                                    />
+                                    /> */}
                                     <Separator className='my-2' />
                                     <Button
                                         type="submit"
@@ -595,19 +595,24 @@ const SettingPage = () => {
                             {linkedAccounts.map((account) => (
                                 <div key={account.id} className='flex items-center justify-between p-3 border rounded-sm'>
                                     <div className='flex items-center gap-2'>
-                                        <Avatar className="size-[34px] rounded-full">
+                                        <Avatar className="size-[34px] rounded">
                                             {account.image && (
                                                 <AvatarImage src={account.image} alt={account.socialName} className={cn(
                                                     account.socialName === "GitHub" && "dark:bg-white"
                                                 )} />
                                             )}
-                                            <AvatarFallback className="rounded-full">
+                                            <AvatarFallback className="rounded">
                                                 {account.accountName.charAt(0).toUpperCase()}{account.accountName.charAt(1).toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
 
                                         <div className='ml-2'>
-                                            <p className='text-sm font-medium'>{account.socialName}</p>
+                                            <p className='text-sm font-medium flex items-center gap-1'>
+                                                {account.socialName}
+                                                <span className='text-xs text-green-500 dark:text-green-600 flex items-center gap-1'>
+                                                    <BadgeCheckIcon className='size-3.5' />
+                                                </span>
+                                            </p>
                                             <p className='text-xs text-gray-500'>{account.email}</p>
                                         </div>
                                     </div>

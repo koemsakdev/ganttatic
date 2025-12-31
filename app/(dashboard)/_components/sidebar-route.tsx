@@ -33,6 +33,7 @@ const menuRoutes = [
 
 
 export const SidebarRoute = () => {
+    
     return (
         <div className={"flex flex-col w-full"}>
             {menuRoutes.map((route) => (

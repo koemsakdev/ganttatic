@@ -1,4 +1,5 @@
-import React from 'react'
+"use client";
+import React, { useState } from 'react'
 import {
     Card,
     CardContent,
@@ -9,6 +10,7 @@ import {
 import { CalendarClock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import Loading from '@/app/loading';
 
 interface ProjectCardProps {
     data: {
@@ -23,12 +25,18 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ data, className }: ProjectCardProps) => {
     const router = useRouter();
+    const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+    const handleRedirect = () => {
+        setIsRedirecting(true);
+        router.push(`/gantt-chart/${data.id}`);
+    }
+    if (isRedirecting) return <Loading />;
     return (
         <Card className={cn(
             className,
             'w-full shadow-none gap-y-2 cursor-pointer hover:bg-slate-50 hover:border-purple-400 dark:hover:border-purple-800 dark:hover:bg-gray-900 transition-all duration-400 ease-in-out'
         )}
-            onClick={() => router.push(`/gantt-chart/${data.id}`)}
+            onClick={handleRedirect}
         >
             <CardHeader>
                 <CardTitle>{data.title}</CardTitle>

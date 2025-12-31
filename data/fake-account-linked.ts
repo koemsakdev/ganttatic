@@ -1,3 +1,5 @@
+import { id } from "zod/v4/locales";
+
 export const linkedAccounts = [
   {
     id: 1,
@@ -13,4 +15,11 @@ export const linkedAccounts = [
     email: 'koemsak.mean@gmail.com',
     image: 'github.png',
   },
+  {
+    id: 3,
+    socialName: 'Email & Password',
+    accountName: 'koemsak_mean',
+    email: 'koemsak.mean@gmail.com',
+    image: 'communication.png',
+  }
 ]
