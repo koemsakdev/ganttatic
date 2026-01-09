@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css";
 import { Toaster } from "sonner";
+import { QueryProvider } from "@/components/query-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,17 +23,19 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${inter.className} min-h-screen p-0 m-0 antialiased bg-gray-50 dark:bg-gray-900`}>
-                <NuqsAdapter>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {children}
-                        <Toaster />
-                    </ThemeProvider>
-                </NuqsAdapter>
+                <QueryProvider>
+                    <NuqsAdapter>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            {children}
+                            <Toaster />
+                        </ThemeProvider>
+                    </NuqsAdapter>
+                </QueryProvider>
             </body>
         </html>
     );

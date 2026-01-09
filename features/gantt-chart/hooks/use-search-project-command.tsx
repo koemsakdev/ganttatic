@@ -2,7 +2,7 @@ import { parseAsBoolean, useQueryState } from "nuqs";
 
 export const useSearchProjectCommand = () => {
     const [isOpen, setIsOpen] = useQueryState(
-        'serach-project',
+        'search-project',
         parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true })
     );
 

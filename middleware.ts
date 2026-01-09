@@ -1,45 +1,40 @@
-import { betterFetch } from "@better-fetch/fetch";
 import { NextResponse, type NextRequest } from "next/server";
-// 1. Import User type along with Session
-import type { Session, User } from "better-auth/types";
 
-const publicPaths = [
+const publicAuthPages = [
   "/sign-in",
   "/register",
   "/verify-email-alert",
   "/email-verified",
-  "/api/auth", 
 ];
 
-export default async function authMiddleware(request: NextRequest) {
-  const pathName = request.nextUrl.pathname;
-  const isPublic = publicPaths.some((path) => pathName.startsWith(path));
+const AUTH_COOKIES = [
+  "better-auth.session_token",
+  "__Secure-better-auth.session_token",
+];
 
-  if (isPublic) {
-    return NextResponse.next();
-  }
+export default function authMiddleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // 2. Update the Type Generic here
-  // We tell TypeScript to expect an object with BOTH session and user
-  const { data } = await betterFetch<{ session: Session; user: User }>(
-    "/api/auth/get-session",
-    {
-      baseURL: request.nextUrl.origin,
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
-    }
+  const sessionCookie = AUTH_COOKIES
+    .map((name) => request.cookies.get(name))
+    .find(Boolean);
+
+  const isAuthPage = publicAuthPages.some((path) =>
+    pathname.startsWith(path)
   );
 
-  // 3. Check if data exists (if null, they aren't logged in)
-  if (!data) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+  const isApiAuthRoute = pathname.startsWith("/api/auth");
+
+  if (!sessionCookie && !isAuthPage && !isApiAuthRoute) {
+    return NextResponse.redirect(
+      new URL("/sign-in", request.url)
+    );
   }
 
-  // 4. Now TypeScript knows 'data.user' exists!
-  // Note: We access 'data.user', not 'session.user'
-  if (!data.user.emailVerified) {
-     return NextResponse.redirect(new URL("/verify-email-alert", request.url));
+  if (sessionCookie && isAuthPage) {
+    return NextResponse.redirect(
+      new URL("/", request.url)
+    );
   }
 
   return NextResponse.next();

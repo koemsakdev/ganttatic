@@ -15,6 +15,7 @@ model User {
   email         String
   emailVerified Boolean
   image         String?
+  role          String     @default("user")
   createdAt     DateTime
   updatedAt     DateTime
   sessions      Session[]
@@ -77,6 +78,7 @@ model Project {
   name      String
   startDate DateTime
   endDate   DateTime
+  description String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 

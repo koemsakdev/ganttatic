@@ -39,7 +39,7 @@ export const UserButton = () => {
                             <AvatarImage src={session?.user.image} />
                         )
                     }
-                    <AvatarFallback>{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
+                    <AvatarFallback className="text-xs mt-0.2">{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align={"end"}>
@@ -50,7 +50,7 @@ export const UserButton = () => {
                                 <AvatarImage src={session?.user.image} />
                             )
                         }
-                        <AvatarFallback>{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
+                        <AvatarFallback className="text-sm mt-0.2">{session?.user.name[0].toUpperCase()}{session?.user.name[1].toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200"> {session?.user.name} </p>
                     <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300"> {session?.user.email}</p>

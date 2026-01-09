@@ -5,19 +5,18 @@ import {
     ChevronDown,
     ChevronRight,
     Trash2,
-    GripVertical,
     Clock,
     PlusCircle,
     ListTodo,
     ArrowLeft,
-    Calendar,
-    ChevronLeft
+    Layers,
+    Save
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { createPortal } from 'react-dom';
+import CustomDatePicker from './custom-date-picker';
 
 // --- Types ---
 interface Task {
@@ -40,210 +39,35 @@ interface Week {
     days: Date[];
 }
 
-// --- Custom Modern Date Picker Component with Year Selection ---
-const CustomDatePicker = ({ value, onChange }: { value: string, onChange: (date: string) => void }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [showYearPicker, setShowYearPicker] = useState(false);
-    const [viewDate, setViewDate] = useState(new Date(value || new Date()));
-    const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
-    
-    const containerRef = useRef<HTMLDivElement>(null);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
-    const selectedDate = useMemo(() => {
-        const d = new Date(value);
-        return isNaN(d.getTime()) ? new Date() : d;
-    }, [value]);
-
-    // Calculate position for the portal
-    const updatePosition = useCallback(() => {
-        if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            setCoords({
-                top: rect.bottom + window.scrollY,
-                left: rect.left + window.scrollX + rect.width / 2,
-                width: rect.width
-            });
-        }
-    }, []);
-
-    const toggleOpen = () => {
-        if (!isOpen) updatePosition();
-        setIsOpen(!isOpen);
-    };
-
-    const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
-    const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
-
-    const calendarDays = useMemo(() => {
-        const year = viewDate.getFullYear();
-        const month = viewDate.getMonth();
-        const totalDays = daysInMonth(year, month);
-        const startDay = firstDayOfMonth(year, month);
-        const days = [];
-
-        for (let i = 0; i < startDay; i++) days.push(null);
-        for (let i = 1; i <= totalDays; i++) days.push(new Date(year, month, i));
-        return days;
-    }, [viewDate]);
-
-    const years = useMemo(() => {
-        const currentYear = new Date().getFullYear();
-        const result = [];
-        for (let i = currentYear - 50; i <= currentYear + 20; i++) result.push(i);
-        return result;
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                containerRef.current && !containerRef.current.contains(event.target as Node) &&
-                dropdownRef.current && !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setIsOpen(false);
-                setShowYearPicker(false);
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-            window.addEventListener("scroll", updatePosition, true);
-            window.addEventListener("resize", updatePosition);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            window.removeEventListener("scroll", updatePosition, true);
-            window.removeEventListener("resize", updatePosition);
-        };
-    }, [isOpen, updatePosition]);
-
-    const formatDateLabel = (date: Date) => {
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    };
-
-    const handleDayClick = (date: Date) => {
-        if (!date) return;
-        const isoString = date.toISOString().split('T')[0];
-        onChange(isoString);
-        setIsOpen(false);
-    };
-
-    const handleYearClick = (year: number) => {
-        setViewDate(new Date(year, viewDate.getMonth(), 1));
-        setShowYearPicker(false);
-    };
-
-    const changeMonth = (offset: number) => {
-        setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1));
-    };
-
-    // Portal Component
-    const PickerPanel = (
-        <div 
-            ref={dropdownRef}
-            style={{ 
-                position: 'absolute', 
-                top: `${coords.top}px`, 
-                left: `${coords.left}px`,
-                transform: 'translateX(-50%)'
-            }}
-            className="z-[9999] w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-xl p-4 animate-in fade-in zoom-in duration-150"
-        >
-            <div className="flex items-center justify-between mb-4">
-                <button onClick={() => changeMonth(-1)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors">
-                    <ChevronLeft size={16} />
-                </button>
-
-                <button
-                    onClick={() => setShowYearPicker(!showYearPicker)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                >
-                    <div className="text-xs font-bold text-slate-700 dark:text-slate-200">
-                        {viewDate.toLocaleString('default', { month: 'short', year: 'numeric' })}
-                    </div>
-                    <ChevronDown size={12} className={`text-slate-400 transition-transform ${showYearPicker ? 'rotate-180' : ''}`} />
-                </button>
-
-                <button onClick={() => changeMonth(1)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors">
-                    <ChevronRight size={16} />
-                </button>
-            </div>
-
-            {showYearPicker ? (
-                <div className="h-48 overflow-y-auto grid grid-cols-3 gap-2 p-1 custom-scrollbar">
-                    {years.map(year => (
-                        <button
-                            key={year}
-                            onClick={() => handleYearClick(year)}
-                            className={`py-2 text-xs rounded-md transition-colors ${viewDate.getFullYear() === year ? 'bg-indigo-600 text-white font-bold' : 'hover:bg-indigo-50 dark:hover:bg-indigo-900/40 text-slate-600 dark:text-slate-300'}`}
-                        >
-                            {year}
-                        </button>
-                    ))}
-                </div>
-            ) : (
-                <>
-                    <div className="grid grid-cols-7 gap-1 mb-2">
-                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
-                            <div key={day} className="text-[10px] text-center font-bold text-slate-400 uppercase">{day}</div>
-                        ))}
-                    </div>
-
-                    <div className="grid grid-cols-7 gap-1">
-                        {calendarDays.map((date, i) => {
-                            if (!date) return <div key={`empty-${i}`} className="h-7 w-7" />;
-                            const isSelected = date.toISOString().split('T')[0] == value;
-                            const isToday = new Date().toDateString() == date.toDateString();
-                            return (
-                                <button
-                                    key={i}
-                                    onClick={() => handleDayClick(date)}
-                                    className={`h-7 w-7 flex items-center justify-center text-[11px] rounded-lg transition-colors
-                                        ${isSelected ? 'bg-indigo-600 text-white font-bold' : 'text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/40'}
-                                        ${isToday && !isSelected ? 'border border-indigo-200 dark:border-indigo-700 text-indigo-600' : ''}
-                                    `}
-                                >
-                                    {date.getDate()}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </>
-            )}
-        </div>
-    );
-
-    return (
-        <div className="relative w-full" ref={containerRef}>
-            <button
-                type="button"
-                onClick={toggleOpen}
-                className="w-full px-2 text-[10px] font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800/80 border border-transparent rounded-xs py-1 transition-all outline-none focus:ring-1 focus:ring-indigo-500"
-            >
-                <span className="truncate block">{formatDateLabel(selectedDate)}</span>
-            </button>
-
-            {isOpen && createPortal(PickerPanel, document.body)}
-        </div>
-    );
-};
 
 const GanttPlanner = () => {
     const router = useRouter();
     // --- Initial Data ---
     const [tasks, setTasks] = useState<Task[]>([
-        { id: 1, name: "Product Initiation", type: "main", assignedTo: "Koemsak Mean", progress: 15, startDate: "2024-10-14", endDate: "2024-10-25", color: "#6366f1", expanded: true, parentId: null, level: 0 },
-        { id: 2, name: "Market Research & Goals", type: "subtask", assignedTo: "Gokce Aslan", progress: 50, startDate: "2024-10-14", endDate: "2024-10-17", color: "#818cf8", expanded: true, parentId: 1, level: 1 },
-        { id: 7, name: "Competitor Benchmarking", type: "subtask", assignedTo: "Sarah Kim", progress: 30, startDate: "2024-10-14", endDate: "2024-10-16", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
-        { id: 8, name: "User Persona Mapping", type: "subtask", assignedTo: "Mike Chen", progress: 20, startDate: "2024-10-16", endDate: "2024-10-18", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
-        { id: 3, name: "Feasibility Studies", type: "subtask", assignedTo: "Hayden Cook", progress: 60, startDate: "2024-10-17", endDate: "2024-10-19", color: "#818cf8", expanded: false, parentId: 1, level: 1 },
-        { id: 5, name: "Design Phase", type: "main", assignedTo: "", progress: 0, startDate: "2024-10-20", endDate: "2024-11-05", color: "#ec4899", expanded: true, parentId: null, level: 0 },
-        { id: 6, name: "High-Fidelity Wireframes", type: "subtask", assignedTo: "Gokce Aslan", progress: 10, startDate: "2024-10-21", endDate: "2024-10-28", color: "#f472b6", expanded: false, parentId: 5, level: 1 }
+        { id: 1, name: "Product Initiation", type: "main", assignedTo: "Koemsak Mean", progress: 15, startDate: "2025-10-14", endDate: "2025-10-25", color: "#6366f1", expanded: true, parentId: null, level: 0 },
+        { id: 2, name: "Market Research & Goals", type: "subtask", assignedTo: "Gokce Aslan", progress: 50, startDate: "2025-10-14", endDate: "2025-10-17", color: "#818cf8", expanded: true, parentId: 1, level: 1 },
+        { id: 7, name: "Competitor Benchmarking", type: "subtask", assignedTo: "Sarah Kim", progress: 30, startDate: "2025-10-14", endDate: "2025-10-16", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
+        { id: 8, name: "User Persona Mapping", type: "subtask", assignedTo: "Mike Chen", progress: 20, startDate: "2025-10-16", endDate: "2025-10-18", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
+        { id: 3, name: "Feasibility Studies", type: "subtask", assignedTo: "Hayden Cook", progress: 60, startDate: "2025-10-17", endDate: "2025-10-19", color: "#818cf8", expanded: false, parentId: 1, level: 1 },
+        { id: 5, name: "Design Phase", type: "main", assignedTo: "", progress: 0, startDate: "2025-10-20", endDate: "2025-11-05", color: "#ec4899", expanded: true, parentId: null, level: 0 },
+        { id: 6, name: "High-Fidelity Wireframes", type: "subtask", assignedTo: "Gokce Aslan", progress: 10, startDate: "2025-10-21", endDate: "2025-10-28", color: "#f472b6", expanded: false, parentId: 5, level: 1 }
     ]);
 
     const [projectTitle, setProjectTitle] = useState<string>('Q4 Project Roadmap');
-    const viewStartDate = useMemo(() => new Date('2024-10-14'), []);
+    // const viewStartDate = useMemo(() => new Date('2024-10-14'), []);
+    // const viewEndDate = useMemo(() => new Date('2024-10-14'), []);
+
+    const parseDate = (date: string) => new Date(`${date}T00:00:00`);
+
+    const viewStartDate = useMemo(() => {
+        const dates = tasks.map(t => parseDate(t.startDate));
+        return new Date(Math.min(...dates.map(d => d.getTime())));
+    }, [tasks]);
+
+    const viewEndDate = useMemo(() => {
+        const dates = tasks.map(t => parseDate(t.endDate));
+        return new Date(Math.max(...dates.map(d => d.getTime())));
+    }, [tasks]);
 
     const [isDragging, setIsDragging] = useState(false);
     const dragInfo = useRef<{
@@ -259,25 +83,41 @@ const GanttPlanner = () => {
     });
 
     // --- Layout Constants ---
-    const DAY_WIDTH = 44;
+    const DAY_WIDTH = 49;
     const ROW_HEIGHT = 52;
     const COL_WIDTH = "w-28";
 
     // --- Timeline Logic ---
     const weeks = useMemo((): Week[] => {
         const arr: Week[] = [];
-        for (let i = 0; i < 10; i++) {
-            const weekStart = new Date(viewStartDate);
-            weekStart.setDate(viewStartDate.getDate() + i * 7);
-            const days = Array.from({ length: 7 }, (_, j) => {
+
+        const start = new Date(viewStartDate);
+        start.setDate(start.getDate() - start.getDay());
+
+        const end = new Date(viewEndDate);
+        end.setDate(end.getDate() + (6 - end.getDay()));
+
+        let current = new Date(start);
+
+        while (current <= end) {
+            const weekStart = new Date(current);
+            const days = Array.from({ length: 7 }, (_, i) => {
                 const d = new Date(weekStart);
-                d.setDate(weekStart.getDate() + j);
+                d.setDate(weekStart.getDate() + i);
                 return d;
             });
-            arr.push({ start: weekStart, end: days[6], days });
+
+            arr.push({
+                start: weekStart,
+                end: days[6],
+                days,
+            });
+
+            current.setDate(current.getDate() + 7);
         }
+
         return arr;
-    }, [viewStartDate]);
+    }, [viewStartDate, viewEndDate]);
 
     const calculateBarPosition = (startStr: string, endStr: string) => {
         if (!startStr || !endStr) return null;
@@ -350,14 +190,23 @@ const GanttPlanner = () => {
 
     const addNewPhase = () => {
         const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#8b5cf6'];
+
+        const today = new Date();
+
+        const formatDate = (date: Date) =>
+            date.toISOString().split("T")[0];
+
+
         const newTask: Task = {
             id: Date.now(),
             name: "Untitled Project Phase",
             type: "main",
             assignedTo: "",
             progress: 0,
-            startDate: "2024-10-14",
-            endDate: "2024-10-20",
+            startDate: formatDate(today),
+            endDate: formatDate(
+                new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
+            ),
             color: colors[tasks.length % colors.length],
             expanded: true,
             parentId: null,
@@ -403,6 +252,7 @@ const GanttPlanner = () => {
         };
     }, [isDragging]);
 
+
     return (
         <div className="flex overflow-hidden transition-colors duration-200 rounded-sm">
             <main className="flex-1 flex flex-col min-w-0">
@@ -422,7 +272,7 @@ const GanttPlanner = () => {
                     </div>
                     <div className="flex items-center gap-3 h-5">
                         <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full transition-colors">
-                            <Clock size={14} /> <span>Saving<span className='animate-pulse'>...</span></span>
+                            <Save size={14} /> <span>Auto Save</span>
                         </div>
                         <Separator orientation="vertical" />
                         <button
@@ -433,7 +283,6 @@ const GanttPlanner = () => {
                         </button>
                     </div>
                 </header>
-
                 {/* --- Main Workspace --- */}
                 <div className="flex-1 flex overflow-hidden">
 
@@ -499,20 +348,15 @@ const GanttPlanner = () => {
                                             {/* Dates */}
                                             <div className={`${COL_WIDTH} px-2`}>
                                                 <CustomDatePicker
-                                                    value={task.startDate}
+                                                    className="text-center w-full px-1 text-[10px] font-medium text-slate-700 dark:text-slate-200 bg-slate-200 dark:bg-slate-700 border border-transparent rounded-xs py-1 transition-all outline-none"
+                                                    value={new Date(task.startDate)}
                                                     onChange={(val) => updateTask(task.id, 'startDate', val)}
                                                 />
                                             </div>
                                             <div className={`${COL_WIDTH} px-2`}>
-                                                {/* <input
-                                                    type="date"
-                                                    value={task.endDate}
-                                                    onChange={e => updateTask(task.id, 'endDate', e.target.value)}
-                                                    className="w-full text-[11px] text-slate-600 dark:text-slate-400 border-none bg-slate-50 dark:bg-slate-800/50 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 rounded px-1.5 py-1 transition-colors text-center [color-scheme:light] dark:[color-scheme:dark]"
-                                                /> */}
-
                                                 <CustomDatePicker
-                                                    value={task.endDate}
+                                                    className="text-center w-full px-1 text-[10px] font-medium text-slate-700 dark:text-slate-200 bg-slate-200 dark:bg-slate-700 border border-transparent rounded-xs py-1 transition-all outline-none"
+                                                    value={new Date(task.endDate)}
                                                     onChange={(val) => updateTask(task.id, 'endDate', val)}
                                                 />
                                             </div>
@@ -536,6 +380,18 @@ const GanttPlanner = () => {
                                             </div>
                                         </div>
                                     ))}
+
+                                    {/* <div className='flex flex-col items-center justify-center text-center mt-10'>
+                                        <div className="mx-auto w-20 h-20 bg-indigo-200 dark:bg-indigo-800 rounded-full flex items-center justify-center mb-6 ring-8 ring-indigo-200/50 dark:ring-indigo-800/50">
+                                            <Layers className="w-10 h-10 text-indigo-500" strokeWidth={1.5} />
+                                        </div>
+                                        <h3 className="text-xl font-semibold dark:text-slate-50 text-slate-900 mb-2">
+                                            No phases found
+                                        </h3>
+                                        <p className="text-slate-500 text-sm mb-8 max-w-[280px] mx-auto leading-relaxed">
+                                            Your project doesn't have any phases yet. Create a phase to start tracking your progress and milestones.
+                                        </p>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -547,8 +403,13 @@ const GanttPlanner = () => {
                             {/* Timeline Header */}
                             <div className="flex sticky top-0 z-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
                                 {weeks.map((week, idx) => (
-                                    <div key={idx} className="shrink-0 border-r border-slate-100 dark:border-slate-800">
-                                        <div className="px-3 py-1.5 text-[10px] font-bold text-slate-800 dark:text-slate-300 uppercase tracking-widest bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 text-center transition-colors">
+                                    <div key={idx} className={cn(
+                                        "shrink-0"
+                                    )}>
+                                        <div className={cn(
+                                            "px-3 py-1.5 text-[10px] font-bold text-slate-800 dark:text-slate-300 uppercase tracking-widest bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 text-center transition-colors",
+                                            idx !== weeks.length - 1 && "border-r border-slate-200 dark:border-slate-700"
+                                        )}>
                                             {week.start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                         </div>
                                         <div className="flex">
@@ -558,7 +419,10 @@ const GanttPlanner = () => {
                                                 return (
                                                     <div
                                                         key={dIdx}
-                                                        className={`w-[44px] h-10 flex flex-col items-center justify-center border-r border-slate-50 dark:border-slate-800 relative transition-colors ${isWeekend ? 'bg-slate-50/40 dark:bg-slate-900/40' : ''}`}
+                                                        className={cn(
+                                                            "w-[49px] h-10 flex flex-col items-center justify-center relative transition-colors border-r border-slate-50 dark:border-slate-800",
+                                                            isWeekend && "bg-slate-50/40 dark:bg-slate-900/40"
+                                                        )}
                                                     >
                                                         <span className={`text-[9px] font-medium uppercase transition-colors ${isToday ? 'text-indigo-600 dark:text-indigo-400 font-bold' : 'text-slate-800 dark:text-slate-300'}`}>
                                                             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day.getDay()]}
@@ -582,7 +446,7 @@ const GanttPlanner = () => {
                                     {weeks.map((w, wi) => (
                                         <div key={wi} className="flex shrink-0">
                                             {w.days.map((d, di) => (
-                                                <div key={di} className="w-[44px] border-r border-slate-50 dark:border-slate-800/60 h-full" />
+                                                <div key={di} className="w-[49px] border-r border-slate-50 dark:border-slate-600/60 h-full" />
                                             ))}
                                         </div>
                                     ))}
@@ -594,17 +458,15 @@ const GanttPlanner = () => {
                                     return (
                                         <div
                                             key={task.id}
-                                            // className={`relative border-b border-slate-50 dark:border-slate-800 flex items-center group transition-colors ${task.level === 0 ? 'bg-indigo-50/5 dark:bg-indigo-500/5' : ''}`}
-                                            className="relative border-b border-slate-200/50 dark:border-slate-800/50 flex items-center"
+                                            className="relative border-b border-slate-200/50 dark:border-slate-600/50 flex items-center"
                                             style={{ height: `${ROW_HEIGHT}px` }}
                                         >
                                             {pos && (
                                                 <div
-                                                    // className="absolute h-9 rounded-full shadow-sm flex items-center px-2 transition-all duration-300 group-hover:scale-[1.01] group-hover:shadow-md cursor-pointer overflow-hidden"
-                                                    className="absolute h-9 rounded-xs shadow-sm flex items-center transition-all duration-300 group-hover:scale-[1.01] group-hover:shadow-md cursor-pointer overflow-hidden"
+                                                    className="absolute h-9 rounded-xs shadow-sm flex items-center transition-all duration-300 group-hover:scale-[1.01] group-hover:shadow-md overflow-hidden"
                                                     style={{
-                                                        left: pos.left + 4,
-                                                        width: pos.width - 8,
+                                                        left: pos.left + 35,
+                                                        width: pos.width,
                                                         backgroundColor: task.color,
                                                     }}
                                                 >
@@ -612,15 +474,13 @@ const GanttPlanner = () => {
                                                     <div
                                                         className="h-full relative cursor-ew-resize group-hover:brightness-110 active:brightness-90 transition-all flex"
                                                         style={{
-                                                            width: `${task.progress}%`,
-                                                            backgroundColor: task.color,
+                                                            width: `${task.progress}%`
                                                         }}
                                                         onMouseDown={(e) => handleDragStart(e, task, pos.width - 8)}
                                                     >
-                                                        {/* Visual Indicator of the Drag Edge */}
                                                         <div
                                                             className={cn(
-                                                                "absolute inset-0 bg-white/25 dark:bg-black/20 rounded-xs transition-all duration-500",
+                                                                "absolute inset-0 bg-white/25 dark:bg-black/25 rounded-xs transition-all duration-500",
                                                                 task.progress < 100 && "border-r-2 border-r-white/20"
                                                             )}
                                                         />

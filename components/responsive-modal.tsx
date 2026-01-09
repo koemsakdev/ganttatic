@@ -13,6 +13,7 @@ import {
     DrawerDescription,
     DrawerTitle
 } from "@/components/ui/drawer";
+import { useRef } from "react";
 
 interface ResponsiveModalProps {
     children: React.ReactNode;
@@ -26,6 +27,7 @@ export const ResponsiveModal = ({
     onOpenChange,
 }: ResponsiveModalProps) => {
     const isDesktop = useMedia("(min-width: 1027px)", true);
+    const dialogContentRef = useRef<HTMLDivElement>(null);
 
     if (isDesktop) {
         return (
@@ -35,7 +37,7 @@ export const ResponsiveModal = ({
             >
                 <DialogTitle />
                 <DialogDescription />
-                <DialogContent className="w-full sm:max-w-lg p-0 border-none overflow-y-auto hide-scrollbar max-h-[85vh] rounded-xs">
+                <DialogContent ref={dialogContentRef} className="w-full sm:max-w-lg p-0 border-none overflow-y-auto hide-scrollbar max-h-[85vh]">
                     {children}
                 </DialogContent>
             </Dialog>
@@ -47,7 +49,7 @@ export const ResponsiveModal = ({
             open={open}
             onOpenChange={onOpenChange}
         >
-            <DrawerContent>
+            <DrawerContent ref={dialogContentRef}>
                 <DrawerTitle />
                 <DrawerDescription />
                 <div className="overflow-y-auto hide-scrollbar max-h-[85vh]">

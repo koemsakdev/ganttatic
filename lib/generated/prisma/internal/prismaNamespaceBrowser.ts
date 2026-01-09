@@ -78,6 +78,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -136,6 +137,7 @@ export const ProjectScalarFieldEnum = {
   name: 'name',
   startDate: 'startDate',
   endDate: 'endDate',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'

@@ -90,7 +90,7 @@ export function RegisterForm({
         console.table(data);
     };
     return (
-        <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xs p-6 shadow-none md:shadow-2xs bg-transparent md:bg-white md:dark:bg-gray-800", className)} {...props}>
+        <div className={cn("flex flex-col gap-6 border-0 md:border rounded-xl p-6 shadow-none md:shadow-2xs bg-transparent md:bg-white md:dark:bg-gray-800", className)} {...props}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-6">
@@ -125,7 +125,7 @@ export function RegisterForm({
                                                         autoComplete="off"
                                                         autoCorrect="off"
                                                         spellCheck="false"
-                                                        className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0 rounded-xs focus-visible:border-purple-500"
                                                         disabled={isSubmitting}
                                                     />
                                                 </FormControl>
@@ -148,7 +148,7 @@ export function RegisterForm({
                                                         autoComplete="off"
                                                         autoCorrect="off"
                                                         spellCheck="false"
-                                                        className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0 rounded-xs focus-visible:border-purple-500"
                                                         disabled={isSubmitting}
                                                     />
                                                 </FormControl>
@@ -172,7 +172,7 @@ export function RegisterForm({
                                                     autoComplete="off"
                                                     autoCorrect="off"
                                                     spellCheck="false"
-                                                    className="w-full shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                    className="w-full shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0 rounded-xs focus-visible:border-purple-500"
                                                     disabled={isSubmitting}
                                                 />
                                             </FormControl>
@@ -192,7 +192,7 @@ export function RegisterForm({
                                                 <div className="relative">
                                                     <Input
                                                         {...field}
-                                                        className="w-full pr-10 shadow-none rounded-sm focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-0 focus:ring-0 focus-visible:ring-0"
+                                                        className="w-full shadow-none focus:shadow-none focus-visible:shadow-none focus:outline-0 focus-visible:outline-none focus:ring-0 focus-visible:ring-0 rounded-xs focus-visible:border-purple-500"
                                                         type={showPassword ? "text" : "password"}
                                                         placeholder="Enter your password"
                                                         autoComplete="off"
@@ -222,7 +222,7 @@ export function RegisterForm({
                             </div>
                             <Button
                                 type="submit"
-                                className="w-full rounded-sm shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100"
+                                className="w-full rounded-xs shadow-none bg-purple-200 hover:bg-purple-300 text-purple-600 hover:text-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 dark:text-purple-200 dark:hover:text-purple-100"
                                 disabled={isSubmitting}
                             >
                                 {
@@ -245,7 +245,7 @@ export function RegisterForm({
                             <Button
                                 variant="secondary"
                                 type="button"
-                                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                className="w-full shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
                                 disabled={isSubmitting}
                             >
                                 <FaGithub className="h-4 w-4" />
@@ -255,7 +255,7 @@ export function RegisterForm({
                             <Button
                                 variant="secondary"
                                 type="button"
-                                className="w-full shadow-none rounded-sm dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
+                                className="w-full shadow-none rounded-xs dark:bg-gray-900 hover:bg-purple-200 hover:text-purple-500 dark:hover:bg-purple-700 dark:hover:text-purple-200"
                                 disabled={isSubmitting}
                             >
                                 <FcGoogle className="h-4 w-4" />
