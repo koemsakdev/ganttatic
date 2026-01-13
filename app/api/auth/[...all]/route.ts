@@ -20,7 +20,7 @@ import projects from "@/features/gantt-chart/server/route";
 
 const app = new Hono().basePath("/api");
 
-const routes = app.route("/projects", projects);
+const routes = app.route("/project", projects);
 
 
 /* ------------------------------------------------------------------ */

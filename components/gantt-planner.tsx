@@ -44,18 +44,16 @@ const GanttPlanner = () => {
     const router = useRouter();
     // --- Initial Data ---
     const [tasks, setTasks] = useState<Task[]>([
-        { id: 1, name: "Product Initiation", type: "main", assignedTo: "Koemsak Mean", progress: 15, startDate: "2025-10-14", endDate: "2025-10-25", color: "#6366f1", expanded: true, parentId: null, level: 0 },
+        { id: 1, name: "Product Initiation", type: "main", assignedTo: "Neth Phan", progress: 15, startDate: "2025-10-14", endDate: "2025-10-25", color: "#6366f1", expanded: true, parentId: null, level: 0 },
         { id: 2, name: "Market Research & Goals", type: "subtask", assignedTo: "Gokce Aslan", progress: 50, startDate: "2025-10-14", endDate: "2025-10-17", color: "#818cf8", expanded: true, parentId: 1, level: 1 },
         { id: 7, name: "Competitor Benchmarking", type: "subtask", assignedTo: "Sarah Kim", progress: 30, startDate: "2025-10-14", endDate: "2025-10-16", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
         { id: 8, name: "User Persona Mapping", type: "subtask", assignedTo: "Mike Chen", progress: 20, startDate: "2025-10-16", endDate: "2025-10-18", color: "#a5b4fc", expanded: false, parentId: 2, level: 2 },
         { id: 3, name: "Feasibility Studies", type: "subtask", assignedTo: "Hayden Cook", progress: 60, startDate: "2025-10-17", endDate: "2025-10-19", color: "#818cf8", expanded: false, parentId: 1, level: 1 },
-        { id: 5, name: "Design Phase", type: "main", assignedTo: "", progress: 0, startDate: "2025-10-20", endDate: "2025-11-05", color: "#ec4899", expanded: true, parentId: null, level: 0 },
+        { id: 5, name: "Design Phase", type: "main", assignedTo: "Neth Phan", progress: 0, startDate: "2025-10-20", endDate: "2025-11-05", color: "#ec4899", expanded: true, parentId: null, level: 0 },
         { id: 6, name: "High-Fidelity Wireframes", type: "subtask", assignedTo: "Gokce Aslan", progress: 10, startDate: "2025-10-21", endDate: "2025-10-28", color: "#f472b6", expanded: false, parentId: 5, level: 1 }
     ]);
 
     const [projectTitle, setProjectTitle] = useState<string>('Q4 Project Roadmap');
-    // const viewStartDate = useMemo(() => new Date('2024-10-14'), []);
-    // const viewEndDate = useMemo(() => new Date('2024-10-14'), []);
 
     const parseDate = (date: string) => new Date(`${date}T00:00:00`);
 
@@ -166,14 +164,20 @@ const GanttPlanner = () => {
         const parent = tasks.find(t => t.id === parentId);
         if (!parent) return;
 
+        const today = new Date();
+        const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+        const startDate = new Date(parent.endDate);
+        const endDate = new Date(parent.endDate);
+
         const newTask: Task = {
             id: Date.now(),
             name: "New Subtask",
             type: "subtask",
             assignedTo: "",
             progress: 0,
-            startDate: parent.startDate,
-            endDate: parent.endDate,
+            startDate: formatDate(new Date(startDate.getTime() + 1 * 24 * 60 * 60 * 1000)),
+            endDate: formatDate(new Date(endDate.getTime() + 8 * 24 * 60 * 60 * 1000)),
             color: parent.color,
             expanded: true,
             parentId: parentId,
@@ -465,7 +469,7 @@ const GanttPlanner = () => {
                                                 <div
                                                     className="absolute h-9 rounded-xs shadow-sm flex items-center transition-all duration-300 group-hover:scale-[1.01] group-hover:shadow-md overflow-hidden"
                                                     style={{
-                                                        left: pos.left + 35,
+                                                        left: pos.left + 84,
                                                         width: pos.width,
                                                         backgroundColor: task.color,
                                                     }}

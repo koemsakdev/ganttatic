@@ -24,21 +24,22 @@ const CreateProjectForm = ({ onCancel }: CreateProjectForm) => {
             createProjectSchema
         ) as Resolver<z.infer<typeof createProjectSchema>>,
         defaultValues: {
-            name: '',
-            description: '',
+            name: 'Open API Marketplace',
+            description: 'Testing Project',
             start_date: undefined,
             end_date: undefined
         }
     });
 
     const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
-        // console.log(values);
-        mutate({ json: values }, {
-            onSuccess: ({ data }) => {
-                form.reset();
-                console.log(data);
-            }
-        })
+        // mutate({ json: values }, {
+        //     onSuccess: ({ data }) => {
+        //         form.reset();
+        //         console.log(data);
+        //     }
+        // })
+
+        console.log(values)
     }
 
     return (
